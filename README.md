@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
 
-## Project info
+# CRM Uniga
 
-**URL**: https://lovable.dev/projects/21a0ab6c-3aee-4bf6-87b5-056cde18c8ba
+Sistema de CRM desenvolvido para a Uniga, otimizado para instalação em servidor Ubuntu 24.04 x64 com Nginx ou Apache.
 
-## How can I edit this code?
+## Stack Tecnológica
 
-There are several ways of editing your application.
+- **Frontend**: React com Vite, TailwindCSS, ShadCN UI
+- **Backend**: Node.js + Express + Prisma
+- **Base de Dados**: PostgreSQL
+- **Autenticação**: JWT com RBAC (gestão de permissões)
+- **Armazenamento**: Local para anexos de leads
 
-**Use Lovable**
+## Funcionalidades Principais
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/21a0ab6c-3aee-4bf6-87b5-056cde18c8ba) and start prompting.
+- Gestão de Utilizadores com Permissões
+  - Perfis: Administrador, Gestor de Vendas e Vendedores
+  - Controlo de acesso baseado em permissões
+  
+- Dashboard Inicial
+  - KPIs relevantes por utilizador
+  - Indicadores de tarefas, eventos e leads
 
-Changes made via Lovable will be committed automatically to this repo.
+- Gestão de Leads
+  - Vistas: Kanban, Tabela e Cartões
+  - Drag-and-drop para mover entre estados
+  - Filtros e pesquisa avançada
 
-**Use your preferred IDE**
+- Calendário
+  - Vistas por Dia, Semana e Mês
+  - Arrastar e editar eventos
+  
+- Gestão de Tarefas
+  - Vistas Kanban e Lista
+  - Tarefas com data, estado, responsável e prioridade
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Perfil e Configurações
+  - Gestão de dados pessoais
+  - Configurações do sistema
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Requisitos do Sistema
 
-Follow these steps:
+- Node.js v18+
+- PostgreSQL 14+
+- Nginx ou Apache
+- Ubuntu 24.04 LTS x64
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Desenvolvimento Local
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Instalar dependências
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Iniciar em modo de desenvolvimento
 npm run dev
+
+# Compilar para produção
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## Credenciais de Teste
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Administrador**: admin@uniga.com / admin123
+- **Gestor**: gerente@uniga.com / gerente123
+- **Vendedor**: vendedor@uniga.com / vendedor123
 
-**Use GitHub Codespaces**
+## Autor
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Uniga - 2024
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/21a0ab6c-3aee-4bf6-87b5-056cde18c8ba) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

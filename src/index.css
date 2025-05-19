@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* A fonte Sofia Pro precisará ser incorporada através de um serviço de fontes ou hospedada localmente */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,10 +17,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 219.5 100% 33.7%; /* Uniga Blue: #0045AC */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 199.7 100% 43.9%; /* Uniga Light Blue: #00A3E0 */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -25,30 +29,23 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84.2% 60.2%; /* Uniga Red: #EE3124 */
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 219.5 100% 33.7%; /* Uniga Blue */
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
+    --sidebar-background: 219.5 100% 33.7%; /* Uniga Blue */
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 199.7 100% 43.9%; /* Uniga Light Blue */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 13% 95%;
+    --sidebar-accent-foreground: 219.5 100% 33.7%; /* Uniga Blue */
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 219.5 100% 33.7%; /* Uniga Blue */
   }
 
   .dark {
@@ -61,7 +58,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 219.5 100% 33.7%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -79,14 +76,15 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 219.5 100% 33.7%;
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 212.7 26.8% 83.9%;
   }
 }
 
@@ -96,6 +94,75 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sofia;
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sofia font-semibold;
+  }
+}
+
+/* Estilos para kanban e arrastar e soltar */
+.kanban-column {
+  @apply bg-muted rounded-lg p-4 min-h-[500px] w-[300px] flex-shrink-0;
+}
+
+.kanban-card {
+  @apply bg-card shadow-sm rounded-md p-3 mb-3 cursor-pointer;
+}
+
+.task-priority-high {
+  @apply border-l-4 border-uniga-red;
+}
+
+.task-priority-medium {
+  @apply border-l-4 border-uniga-yellow;
+}
+
+.task-priority-low {
+  @apply border-l-4 border-uniga-green;
+}
+
+/* Estilos para calendário */
+.calendar-day {
+  @apply border border-border min-h-[100px];
+}
+
+.calendar-event {
+  @apply bg-uniga-blue text-white rounded p-1 text-sm mb-1 cursor-pointer;
+}
+
+/* Estilos para tabelas */
+.data-table {
+  @apply w-full border-collapse;
+}
+
+.data-table th {
+  @apply bg-muted p-2 text-left;
+}
+
+.data-table td {
+  @apply p-2 border-b border-border;
+}
+
+/* Estilos para cards */
+.dashboard-card {
+  @apply bg-card rounded-lg shadow p-4;
+}
+
+/* Estilos para sobrepor alguns componentes do shadcn */
+.btn-primary {
+  @apply bg-uniga-blue text-white hover:bg-uniga-darkblue;
+}
+
+.btn-secondary {
+  @apply bg-uniga-lightblue text-white hover:bg-uniga-blue;
+}
+
+.btn-danger {
+  @apply bg-uniga-red text-white hover:bg-red-700;
+}
+
+.btn-success {
+  @apply bg-uniga-green text-white hover:bg-green-700;
 }

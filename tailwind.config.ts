@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,9 +25,20 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				// Cores da Uniga
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
+				},
+				uniga: {
+					blue: '#0045AC',
+					lightblue: '#00A3E0', 
+					darkblue: '#002D62',
+					red: '#EE3124',
+					green: '#00843D',
+					yellow: '#FFD100',
+					gray: '#58595B',
+					lightgray: '#D1D3D4'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -67,6 +79,9 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sofia: ['Sofia Pro', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {
