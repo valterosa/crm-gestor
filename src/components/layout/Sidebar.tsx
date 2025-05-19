@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from "@/lib/utils";
 import { 
@@ -11,9 +11,19 @@ import {
   Settings, 
   LogOut, 
   Menu, 
-  X
+  X,
+  User,
+  KanbanSquare,
+  TableProperties,
+  FileBox,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface SidebarProps {
   className?: string;
@@ -23,9 +33,12 @@ const Sidebar = ({ className }: SidebarProps) => {
   const { user, hasPermission, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
+
+  const isActive = (path: string) => location.pathname.startsWith(path);
 
   const navItems = [
     {
@@ -38,7 +51,24 @@ const Sidebar = ({ className }: SidebarProps) => {
       name: 'Leads',
       path: '/leads',
       icon: <Users className="h-5 w-5" />,
-      permission: 'view_leads'
+      permission: 'view_leads',
+      subItems: [
+        {
+          name: 'Kanban',
+          path: '/leads/kanban',
+          icon: <KanbanSquare className="h-4 w-4" />
+        },
+        {
+          name: 'Tabela',
+          path: '/leads/tabela',
+          icon: <TableProperties className="h-4 w-4" />
+        },
+        {
+          name: 'Cartões',
+          path: '/leads/cartoes',
+          icon: <FileBox className="h-4 w-4" />
+        }
+      ]
     },
     {
       name: 'Calendário',
@@ -50,7 +80,24 @@ const Sidebar = ({ className }: SidebarProps) => {
       name: 'Tarefas',
       path: '/tarefas',
       icon: <CheckSquare className="h-5 w-5" />,
-      permission: 'view_tasks'
+      permission: 'view_tasks',
+      subItems: [
+        {
+          name: 'Kanban',
+          path: '/tarefas/kanban',
+          icon: <KanbanSquare className="h-4 w-4" />
+        },
+        {
+          name: 'Tabela',
+          path: '/tarefas/tabela',
+          icon: <TableProperties className="h-4 w-4" />
+        },
+        {
+          name: 'Cartões',
+          path: '/tarefas/cartoes',
+          icon: <FileBox className="h-4 w-4" />
+        }
+      ]
     },
     {
       name: 'Configurações',
@@ -122,17 +169,67 @@ const Sidebar = ({ className }: SidebarProps) => {
           <ul className="space-y-2 px-2">
             {navItems.map((item) => (
               hasPermission(item.permission) && (
-                <li key={item.path}>
-                  <Link 
-                    to={item.path}
-                    className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-uniga-darkblue transition-colors"
-                  >
-                    <div>{item.icon}</div>
-                    {!isCollapsed && <span>{item.name}</span>}
-                  </Link>
+                <li key={item.path} className="space-y-1">
+                  {item.subItems ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button 
+                          className={cn(
+                            "flex items-center gap-3 px-3 py-2 rounded-md w-full text-left hover:bg-uniga-darkblue transition-colors",
+                            isActive(item.path) && "bg-uniga-darkblue"
+                          )}
+                        >
+                          <div>{item.icon}</div>
+                          {!isCollapsed && <span>{item.name}</span>}
+                          {!isCollapsed && <span className="ml-auto">▼</span>}
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent 
+                        className="w-52 bg-uniga-darkblue border-uniga-darkblue text-white p-1"
+                        align="end"
+                      >
+                        {item.subItems.map((subItem) => (
+                          <DropdownMenuItem key={subItem.path} asChild>
+                            <Link 
+                              to={subItem.path}
+                              className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-uniga-blue transition-colors cursor-pointer"
+                            >
+                              {subItem.icon}
+                              <span>{subItem.name}</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Link 
+                      to={item.path}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-md hover:bg-uniga-darkblue transition-colors",
+                        isActive(item.path) && "bg-uniga-darkblue"
+                      )}
+                    >
+                      <div>{item.icon}</div>
+                      {!isCollapsed && <span>{item.name}</span>}
+                    </Link>
+                  )}
                 </li>
               )
             ))}
+            
+            {/* Link para perfil de usuário */}
+            <li>
+              <Link 
+                to="/perfil" 
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-md hover:bg-uniga-darkblue transition-colors",
+                  isActive('/perfil') && "bg-uniga-darkblue"
+                )}
+              >
+                <User className="h-5 w-5" />
+                {!isCollapsed && <span>Perfil</span>}
+              </Link>
+            </li>
           </ul>
         </nav>
 

@@ -11,6 +11,17 @@ import AuthGuard from "./components/AuthGuard";
 // Páginas
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import LeadsKanban from "./pages/leads/LeadsKanban";
+import LeadsTable from "./pages/leads/LeadsTable";
+import LeadsCards from "./pages/leads/LeadsCards";
+import LeadDetail from "./pages/leads/LeadDetail";
+import CalendarView from "./pages/calendar/CalendarView";
+import TasksKanban from "./pages/tasks/TasksKanban";
+import TasksTable from "./pages/tasks/TasksTable";
+import TasksCards from "./pages/tasks/TasksCards";
+import UserProfile from "./pages/user/UserProfile";
+import Settings from "./pages/settings/Settings";
+import UserManagement from "./pages/settings/UserManagement";
 import AccessDenied from "./pages/AccessDenied";
 import NotFound from "./pages/NotFound";
 
@@ -30,13 +41,133 @@ const App = () => (
             {/* Rota de acesso negado */}
             <Route path="/denied" element={<AccessDenied />} />
             
-            {/* Rotas protegidas */}
+            {/* Rotas protegidas - Dashboard */}
             <Route 
               path="/dashboard" 
               element={
                 <AuthGuard requiredPermission="view_dashboard">
                   <MainLayout>
                     <Dashboard />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            
+            {/* Rotas protegidas - Leads */}
+            <Route 
+              path="/leads/kanban" 
+              element={
+                <AuthGuard requiredPermission="view_leads">
+                  <MainLayout>
+                    <LeadsKanban />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/leads/tabela" 
+              element={
+                <AuthGuard requiredPermission="view_leads">
+                  <MainLayout>
+                    <LeadsTable />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/leads/cartoes" 
+              element={
+                <AuthGuard requiredPermission="view_leads">
+                  <MainLayout>
+                    <LeadsCards />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/leads/:id" 
+              element={
+                <AuthGuard requiredPermission="view_leads">
+                  <MainLayout>
+                    <LeadDetail />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            
+            {/* Rotas protegidas - Calendário */}
+            <Route 
+              path="/calendario" 
+              element={
+                <AuthGuard requiredPermission="view_calendar">
+                  <MainLayout>
+                    <CalendarView />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            
+            {/* Rotas protegidas - Tarefas */}
+            <Route 
+              path="/tarefas/kanban" 
+              element={
+                <AuthGuard requiredPermission="view_tasks">
+                  <MainLayout>
+                    <TasksKanban />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/tarefas/tabela" 
+              element={
+                <AuthGuard requiredPermission="view_tasks">
+                  <MainLayout>
+                    <TasksTable />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/tarefas/cartoes" 
+              element={
+                <AuthGuard requiredPermission="view_tasks">
+                  <MainLayout>
+                    <TasksCards />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            
+            {/* Rotas protegidas - Perfil de Utilizador */}
+            <Route 
+              path="/perfil" 
+              element={
+                <AuthGuard>
+                  <MainLayout>
+                    <UserProfile />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            
+            {/* Rotas protegidas - Configurações */}
+            <Route 
+              path="/configuracoes" 
+              element={
+                <AuthGuard requiredPermission="settings">
+                  <MainLayout>
+                    <Settings />
+                  </MainLayout>
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/configuracoes/utilizadores" 
+              element={
+                <AuthGuard requiredPermission="manage_users">
+                  <MainLayout>
+                    <UserManagement />
                   </MainLayout>
                 </AuthGuard>
               } 
