@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useToast } from '@/hooks/use-toast';
@@ -5,7 +6,7 @@ import { getTarefasByStatus } from '@/services/mockData';
 import { Tarefa, TaskStatus } from '@/types/models';
 import { Card, CardContent } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
-import { Search, Plus, Filter } from 'lucide-react';
+import { Search, Plus, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,11 +17,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const TasksKanban = () => {
   const { toast } = useToast();
   const [tasks, setTasks] = useState<Record<TaskStatus, Tarefa[]>>({} as Record<TaskStatus, Tarefa[]>);
   const [searchTerm, setSearchTerm] = useState('');
+  const [collapsedColumns, setCollapsedColumns] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     // Carregar tarefas iniciais
@@ -77,6 +80,13 @@ const TasksKanban = () => {
     });
   };
 
+  const toggleColumn = (columnId: string) => {
+    setCollapsedColumns(prev => ({
+      ...prev,
+      [columnId]: !prev[columnId]
+    }));
+  };
+
   const statusColumns: {id: TaskStatus; title: string}[] = [
     { id: 'pendente', title: 'Pendente' },
     { id: 'em_progresso', title: 'Em Progresso' },
@@ -127,67 +137,83 @@ const TasksKanban = () => {
         </Button>
       </div>
 
-      <div className="pb-8 overflow-auto">
+      <div className="pb-8">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="flex gap-4" style={{ minWidth: 'max-content' }}>
+          <div className="flex flex-wrap gap-4">
             {statusColumns.map((column) => (
-              <div key={column.id} className="w-80">
+              <Collapsible
+                key={column.id}
+                className="w-80 flex-shrink-0"
+                open={!collapsedColumns[column.id]}
+              >
                 <div className="bg-gray-100 rounded-t-md p-3 font-medium border">
-                  <div className="flex justify-between items-center">
-                    <span>{column.title}</span>
-                    <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">
-                      {filteredTasks[column.id]?.length || 0}
-                    </span>
-                  </div>
+                  <CollapsibleTrigger asChild onClick={() => toggleColumn(column.id)} className="w-full">
+                    <div className="flex justify-between items-center cursor-pointer">
+                      <span>{column.title}</span>
+                      <div className="flex items-center">
+                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
+                          {filteredTasks[column.id]?.length || 0}
+                        </span>
+                        {collapsedColumns[column.id] ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronUp className="h-4 w-4" />
+                        )}
+                      </div>
+                    </div>
+                  </CollapsibleTrigger>
                 </div>
-                <Droppable droppableId={column.id}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="bg-gray-50 rounded-b-md p-2 min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)] overflow-y-auto border border-t-0"
-                    >
-                      {filteredTasks[column.id]?.map((task, index) => (
-                        <Draggable key={task.id} draggableId={task.id} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="mb-2"
-                            >
-                              <Card className="hover:shadow-md transition-shadow bg-white">
-                                <CardContent className="p-4">
-                                  <div className="flex flex-col gap-2">
-                                    <div className="font-medium">{task.titulo}</div>
-                                    <div className="text-sm text-muted-foreground line-clamp-2">{task.descricao}</div>
-                                    
-                                    {task.lead && (
-                                      <div className="text-xs text-muted-foreground">
-                                        Lead: {task.lead.nome}
-                                      </div>
-                                    )}
-                                    
-                                    <div className="flex justify-between items-center mt-2">
-                                      <div className="flex items-center">
-                                        <StatusBadge status={task.prioridade} />
-                                      </div>
-                                      <div className="text-xs text-muted-foreground">
-                                        {format(new Date(task.prazo), 'dd/MM/yyyy')}
+                
+                <CollapsibleContent>
+                  <Droppable droppableId={column.id}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="bg-gray-50 rounded-b-md p-2 min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)] overflow-y-auto border border-t-0"
+                      >
+                        {filteredTasks[column.id]?.map((task, index) => (
+                          <Draggable key={task.id} draggableId={task.id} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="mb-2"
+                              >
+                                <Card className="hover:shadow-md transition-shadow bg-white">
+                                  <CardContent className="p-4">
+                                    <div className="flex flex-col gap-2">
+                                      <div className="font-medium">{task.titulo}</div>
+                                      <div className="text-sm text-muted-foreground line-clamp-2">{task.descricao}</div>
+                                      
+                                      {task.lead && (
+                                        <div className="text-xs text-muted-foreground">
+                                          Lead: {task.lead.nome}
+                                        </div>
+                                      )}
+                                      
+                                      <div className="flex justify-between items-center mt-2">
+                                        <div className="flex items-center">
+                                          <StatusBadge status={task.prioridade} />
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                          {format(new Date(task.prazo), 'dd/MM/yyyy')}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
+                                  </CardContent>
+                                </Card>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </CollapsibleContent>
+              </Collapsible>
             ))}
           </div>
         </DragDropContext>

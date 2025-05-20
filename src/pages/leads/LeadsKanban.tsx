@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useToast } from '@/hooks/use-toast';
@@ -6,7 +7,7 @@ import { Lead, LeadStatus } from '@/types/models';
 import { Card, CardContent } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Link } from 'react-router-dom';
-import { Search, Plus, Filter } from 'lucide-react';
+import { Search, Plus, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,11 +16,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const LeadsKanban = () => {
   const { toast } = useToast();
   const [leads, setLeads] = useState<Record<LeadStatus, Lead[]>>({} as Record<LeadStatus, Lead[]>);
   const [searchTerm, setSearchTerm] = useState('');
+  const [collapsedColumns, setCollapsedColumns] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     // Carregar leads iniciais
@@ -79,6 +82,13 @@ const LeadsKanban = () => {
     });
   };
 
+  const toggleColumn = (columnId: string) => {
+    setCollapsedColumns(prev => ({
+      ...prev,
+      [columnId]: !prev[columnId]
+    }));
+  };
+
   const statusColumns: {id: LeadStatus; title: string}[] = [
     { id: 'novo', title: 'Novo' },
     { id: 'contactado', title: 'Contactado' },
@@ -130,64 +140,80 @@ const LeadsKanban = () => {
         </Button>
       </div>
 
-      <div className="pb-8 overflow-auto">
+      <div className="pb-8">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="flex gap-4" style={{ minWidth: 'max-content' }}>
+          <div className="flex flex-wrap gap-4">
             {statusColumns.map((column) => (
-              <div key={column.id} className="w-72">
+              <Collapsible
+                key={column.id}
+                className="w-72 flex-shrink-0"
+                open={!collapsedColumns[column.id]}
+              >
                 <div className="bg-gray-100 rounded-t-md p-3 font-medium border">
-                  <div className="flex justify-between items-center">
-                    <span>{column.title}</span>
-                    <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">
-                      {filteredLeads[column.id]?.length || 0}
-                    </span>
-                  </div>
-                </div>
-                <Droppable droppableId={column.id}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="bg-gray-50 rounded-b-md p-2 min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)] overflow-y-auto border border-t-0"
-                    >
-                      {filteredLeads[column.id]?.map((lead, index) => (
-                        <Draggable key={lead.id} draggableId={lead.id} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="mb-2"
-                            >
-                              <Link to={`/leads/${lead.id}`}>
-                                <Card className="hover:shadow-md transition-shadow bg-white">
-                                  <CardContent className="p-4">
-                                    <div className="flex flex-col gap-2">
-                                      <div className="font-medium">{lead.nome}</div>
-                                      <div className="text-sm text-muted-foreground">{lead.empresa}</div>
-                                      <div className="flex justify-between items-center mt-2">
-                                        <div className="text-sm font-medium">
-                                          {lead.valor.toLocaleString('pt-PT', {
-                                            style: 'currency',
-                                            currency: 'EUR',
-                                            minimumFractionDigits: 0,
-                                          })}
-                                        </div>
-                                        <StatusBadge status={lead.status} />
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              </Link>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
+                  <CollapsibleTrigger asChild onClick={() => toggleColumn(column.id)} className="w-full">
+                    <div className="flex justify-between items-center cursor-pointer">
+                      <span>{column.title}</span>
+                      <div className="flex items-center">
+                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
+                          {filteredLeads[column.id]?.length || 0}
+                        </span>
+                        {collapsedColumns[column.id] ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronUp className="h-4 w-4" />
+                        )}
+                      </div>
                     </div>
-                  )}
-                </Droppable>
-              </div>
+                  </CollapsibleTrigger>
+                </div>
+                
+                <CollapsibleContent>
+                  <Droppable droppableId={column.id}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="bg-gray-50 rounded-b-md p-2 min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)] overflow-y-auto border border-t-0"
+                      >
+                        {filteredLeads[column.id]?.map((lead, index) => (
+                          <Draggable key={lead.id} draggableId={lead.id} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="mb-2"
+                              >
+                                <Link to={`/leads/${lead.id}`}>
+                                  <Card className="hover:shadow-md transition-shadow bg-white">
+                                    <CardContent className="p-4">
+                                      <div className="flex flex-col gap-2">
+                                        <div className="font-medium">{lead.nome}</div>
+                                        <div className="text-sm text-muted-foreground">{lead.empresa}</div>
+                                        <div className="flex justify-between items-center mt-2">
+                                          <div className="text-sm font-medium">
+                                            {lead.valor.toLocaleString('pt-PT', {
+                                              style: 'currency',
+                                              currency: 'EUR',
+                                              minimumFractionDigits: 0,
+                                            })}
+                                          </div>
+                                          <StatusBadge status={lead.status} />
+                                        </div>
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </Link>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </CollapsibleContent>
+              </Collapsible>
             ))}
           </div>
         </DragDropContext>
