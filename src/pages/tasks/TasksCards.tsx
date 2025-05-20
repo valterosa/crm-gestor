@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -40,37 +39,34 @@ const TasksCards = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold">Tarefas - Vista Cartões</h1>
-        <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Pesquisar tarefas..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                Filtros
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Todas as tarefas</DropdownMenuItem>
-              <DropdownMenuItem>Minhas tarefas</DropdownMenuItem>
-              <DropdownMenuItem>Tarefas atrasadas</DropdownMenuItem>
-              <DropdownMenuItem>Alta prioridade</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Nova Tarefa
-          </Button>
+      <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Pesquisar tarefas..."
+            className="pl-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Filter className="h-4 w-4 mr-2" />
+              Filtros
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Todas as tarefas</DropdownMenuItem>
+            <DropdownMenuItem>Minhas tarefas</DropdownMenuItem>
+            <DropdownMenuItem>Tarefas atrasadas</DropdownMenuItem>
+            <DropdownMenuItem>Alta prioridade</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Nova Tarefa
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

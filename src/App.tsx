@@ -11,14 +11,10 @@ import AuthGuard from "./components/AuthGuard";
 // Páginas
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import LeadsKanban from "./pages/leads/LeadsKanban";
-import LeadsTable from "./pages/leads/LeadsTable";
-import LeadsCards from "./pages/leads/LeadsCards";
+import LeadsPage from "./pages/leads/LeadsPage";
 import LeadDetail from "./pages/leads/LeadDetail";
 import CalendarView from "./pages/calendar/CalendarView";
-import TasksKanban from "./pages/tasks/TasksKanban";
-import TasksTable from "./pages/tasks/TasksTable";
-import TasksCards from "./pages/tasks/TasksCards";
+import TasksPage from "./pages/tasks/TasksPage";
 import UserProfile from "./pages/user/UserProfile";
 import Settings from "./pages/settings/Settings";
 import UserManagement from "./pages/settings/UserManagement";
@@ -55,31 +51,11 @@ const App = () => (
             
             {/* Rotas protegidas - Leads */}
             <Route 
-              path="/leads/kanban" 
+              path="/leads" 
               element={
                 <AuthGuard requiredPermission="view_leads">
                   <MainLayout>
-                    <LeadsKanban />
-                  </MainLayout>
-                </AuthGuard>
-              } 
-            />
-            <Route 
-              path="/leads/tabela" 
-              element={
-                <AuthGuard requiredPermission="view_leads">
-                  <MainLayout>
-                    <LeadsTable />
-                  </MainLayout>
-                </AuthGuard>
-              } 
-            />
-            <Route 
-              path="/leads/cartoes" 
-              element={
-                <AuthGuard requiredPermission="view_leads">
-                  <MainLayout>
-                    <LeadsCards />
+                    <LeadsPage />
                   </MainLayout>
                 </AuthGuard>
               } 
@@ -109,31 +85,11 @@ const App = () => (
             
             {/* Rotas protegidas - Tarefas */}
             <Route 
-              path="/tarefas/kanban" 
+              path="/tarefas" 
               element={
                 <AuthGuard requiredPermission="view_tasks">
                   <MainLayout>
-                    <TasksKanban />
-                  </MainLayout>
-                </AuthGuard>
-              } 
-            />
-            <Route 
-              path="/tarefas/tabela" 
-              element={
-                <AuthGuard requiredPermission="view_tasks">
-                  <MainLayout>
-                    <TasksTable />
-                  </MainLayout>
-                </AuthGuard>
-              } 
-            />
-            <Route 
-              path="/tarefas/cartoes" 
-              element={
-                <AuthGuard requiredPermission="view_tasks">
-                  <MainLayout>
-                    <TasksCards />
+                    <TasksPage />
                   </MainLayout>
                 </AuthGuard>
               } 

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useToast } from '@/hooks/use-toast';
@@ -101,37 +100,34 @@ const LeadsKanban = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold">Leads - Vista Kanban</h1>
-        <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Pesquisar leads..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                Filtros
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Todos</DropdownMenuItem>
-              <DropdownMenuItem>Os meus leads</DropdownMenuItem>
-              <DropdownMenuItem>Leads sem responsável</DropdownMenuItem>
-              <DropdownMenuItem>Leads de alto valor</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Lead
-          </Button>
+      <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Pesquisar leads..."
+            className="pl-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Filter className="h-4 w-4 mr-2" />
+              Filtros
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Todos</DropdownMenuItem>
+            <DropdownMenuItem>Os meus leads</DropdownMenuItem>
+            <DropdownMenuItem>Leads sem responsável</DropdownMenuItem>
+            <DropdownMenuItem>Leads de alto valor</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Novo Lead
+        </Button>
       </div>
 
       <div className="pb-8 overflow-auto">
