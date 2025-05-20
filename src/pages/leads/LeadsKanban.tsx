@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { Search, Plus, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -146,7 +147,7 @@ const LeadsKanban = () => {
             {statusColumns.map((column) => (
               <Collapsible
                 key={column.id}
-                className="w-72 flex-shrink-0"
+                className={`w-72 flex-shrink-0 flex flex-col ${collapsedColumns[column.id] ? 'h-auto' : ''}`}
                 open={!collapsedColumns[column.id]}
               >
                 <div className="bg-gray-100 rounded-t-md p-3 font-medium border">
@@ -167,48 +168,50 @@ const LeadsKanban = () => {
                   </CollapsibleTrigger>
                 </div>
                 
-                <CollapsibleContent>
+                <CollapsibleContent className="flex-grow">
                   <Droppable droppableId={column.id}>
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className="bg-gray-50 rounded-b-md p-2 min-h-[calc(100vh-270px)] max-h-[calc(100vh-270px)] overflow-y-auto border border-t-0"
+                        className="bg-gray-50 rounded-b-md border border-t-0 h-full"
                       >
-                        {filteredLeads[column.id]?.map((lead, index) => (
-                          <Draggable key={lead.id} draggableId={lead.id} index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="mb-2"
-                              >
-                                <Link to={`/leads/${lead.id}`}>
-                                  <Card className="hover:shadow-md transition-shadow bg-white">
-                                    <CardContent className="p-4">
-                                      <div className="flex flex-col gap-2">
-                                        <div className="font-medium">{lead.nome}</div>
-                                        <div className="text-sm text-muted-foreground">{lead.empresa}</div>
-                                        <div className="flex justify-between items-center mt-2">
-                                          <div className="text-sm font-medium">
-                                            {lead.valor.toLocaleString('pt-PT', {
-                                              style: 'currency',
-                                              currency: 'EUR',
-                                              minimumFractionDigits: 0,
-                                            })}
+                        <ScrollArea className="h-[400px] p-2">
+                          {filteredLeads[column.id]?.map((lead, index) => (
+                            <Draggable key={lead.id} draggableId={lead.id} index={index}>
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="mb-2"
+                                >
+                                  <Link to={`/leads/${lead.id}`}>
+                                    <Card className="hover:shadow-md transition-shadow bg-white">
+                                      <CardContent className="p-4">
+                                        <div className="flex flex-col gap-2">
+                                          <div className="font-medium">{lead.nome}</div>
+                                          <div className="text-sm text-muted-foreground">{lead.empresa}</div>
+                                          <div className="flex justify-between items-center mt-2">
+                                            <div className="text-sm font-medium">
+                                              {lead.valor.toLocaleString('pt-PT', {
+                                                style: 'currency',
+                                                currency: 'EUR',
+                                                minimumFractionDigits: 0,
+                                              })}
+                                            </div>
+                                            <StatusBadge status={lead.status} />
                                           </div>
-                                          <StatusBadge status={lead.status} />
                                         </div>
-                                      </div>
-                                    </CardContent>
-                                  </Card>
-                                </Link>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
+                                      </CardContent>
+                                    </Card>
+                                  </Link>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </ScrollArea>
                       </div>
                     )}
                   </Droppable>
