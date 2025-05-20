@@ -1,5 +1,6 @@
 
 // Tipos de dados para a aplicação
+import { User } from './index';
 
 export type LeadStatus = 'novo' | 'contactado' | 'qualificado' | 'proposta' | 'negociacao' | 'ganho' | 'perdido';
 
