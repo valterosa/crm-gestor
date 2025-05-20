@@ -9,7 +9,7 @@ interface AuthGuardProps {
 }
 
 const AuthGuard = ({ children, requiredPermission }: AuthGuardProps) => {
-  const { isAuthenticated, isLoading, hasPermission } = useAuth();
+  const { isAuthenticated, isLoading, hasPermission, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +30,11 @@ const AuthGuard = ({ children, requiredPermission }: AuthGuardProps) => {
 
   if (!isAuthenticated) {
     return null;
+  }
+
+  // Administradores têm acesso a todas as rotas
+  if (user?.role === 'admin') {
+    return <>{children}</>;
   }
 
   if (requiredPermission && !hasPermission(requiredPermission)) {

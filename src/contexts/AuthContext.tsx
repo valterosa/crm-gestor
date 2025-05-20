@@ -17,11 +17,46 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Mock de permissões baseado em papéis
+// Mapeamento de permissões baseado em papéis
+// Administradores têm acesso a tudo na aplicação
 const rolePermissions: Record<UserRole, string[]> = {
-  admin: ['admin', 'manage_users', 'view_dashboard', 'manage_leads', 'manage_tasks', 'manage_calendar', 'settings'],
-  manager: ['view_dashboard', 'manage_leads', 'manage_tasks', 'manage_calendar', 'view_reports'],
-  salesperson: ['view_dashboard', 'view_leads', 'manage_own_leads', 'view_tasks', 'manage_own_tasks', 'view_calendar', 'manage_own_calendar'],
+  admin: [
+    'admin', 
+    'manage_users', 
+    'view_dashboard', 
+    'manage_leads', 
+    'view_leads',
+    'manage_tasks', 
+    'view_tasks',
+    'manage_calendar', 
+    'view_calendar',
+    'settings',
+    'view_reports',
+    'manage_own_leads',
+    'manage_own_tasks',
+    'view_own_leads',
+    'view_own_tasks',
+    'manage_own_calendar',
+  ],
+  manager: [
+    'view_dashboard', 
+    'manage_leads', 
+    'view_leads',
+    'manage_tasks', 
+    'view_tasks',
+    'manage_calendar', 
+    'view_calendar',
+    'view_reports'
+  ],
+  salesperson: [
+    'view_dashboard', 
+    'view_leads', 
+    'manage_own_leads', 
+    'view_tasks', 
+    'manage_own_tasks', 
+    'view_calendar', 
+    'manage_own_calendar'
+  ],
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -117,6 +152,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const hasPermission = (permission: string): boolean => {
     if (!user) return false;
+    
+    // Administradores sempre têm todas as permissões
+    if (user.role === 'admin') return true;
+    
+    // Para outros papéis, verifica na lista de permissões
     return rolePermissions[user.role]?.includes(permission) || false;
   };
 
