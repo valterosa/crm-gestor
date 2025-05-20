@@ -1,5 +1,5 @@
 
-# CRM Uniga
+# CRM
 
 Sistema de CRM desenvolvido para a Uniga, otimizado para instalação em servidor Ubuntu 24.04 x64 com Nginx ou Apache.
 
@@ -66,5 +66,5 @@ npm run build
 
 ## Autor
 
-Uniga - 2024
+© Valter Rosa - 2025
 
