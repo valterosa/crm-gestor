@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Search, Plus, Filter, ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { memo, useMemo, useCallback, useState, useEffect } from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Search, Plus, Filter, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -11,25 +11,31 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { getTarefasByStatus } from '@/services/mockData';
-import { Tarefa, TaskStatus, TaskPriority } from '@/types/models';
+} from "@/components/ui/dropdown-menu";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { getTarefasByStatus } from "@/services/mockData";
+import { Tarefa, TaskStatus, TaskPriority } from "@/types/models";
 
-type SortField = 'titulo' | 'prazo' | 'status' | 'prioridade' | 'responsavel' | 'lead';
-type SortDirection = 'asc' | 'desc';
+type SortField =
+  | "titulo"
+  | "prazo"
+  | "status"
+  | "prioridade"
+  | "responsavel"
+  | "lead";
+type SortDirection = "asc" | "desc";
 
-const TasksTable = () => {
+const TasksTableComponent = () => {
   const [tasks, setTasks] = useState<Tarefa[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState<SortField>('prazo');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<SortField>("prazo");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   useEffect(() => {
     // Carrega tarefas do serviço mockado
@@ -38,69 +44,83 @@ const TasksTable = () => {
     setTasks(allTasks);
   }, []);
 
-  const handleSort = (field: SortField) => {
-    if (field === sortField) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
-
-  const sortedTasks = [...tasks].sort((a, b) => {
-    // Lógica de ordenação baseada no campo
-    if (sortField === 'titulo') {
-      return sortDirection === 'asc' 
-        ? a.titulo.localeCompare(b.titulo)
-        : b.titulo.localeCompare(a.titulo);
-    }
-    if (sortField === 'prazo') {
-      return sortDirection === 'asc'
-        ? new Date(a.prazo).getTime() - new Date(b.prazo).getTime()
-        : new Date(b.prazo).getTime() - new Date(a.prazo).getTime();
-    }
-    if (sortField === 'status') {
-      return sortDirection === 'asc'
-        ? a.status.localeCompare(b.status)
-        : b.status.localeCompare(a.status);
-    }
-    if (sortField === 'prioridade') {
-      const prioridadeOrder: Record<TaskPriority, number> = {
-        'baixa': 1,
-        'media': 2,
-        'alta': 3,
-        'urgente': 4
-      };
-      
-      return sortDirection === 'asc'
-        ? prioridadeOrder[a.prioridade] - prioridadeOrder[b.prioridade]
-        : prioridadeOrder[b.prioridade] - prioridadeOrder[a.prioridade];
-    }
-    if (sortField === 'responsavel') {
-      const aName = a.responsavel?.name || '';
-      const bName = b.responsavel?.name || '';
-      
-      return sortDirection === 'asc'
-        ? aName.localeCompare(bName)
-        : bName.localeCompare(aName);
-    }
-    if (sortField === 'lead') {
-      const aName = a.lead?.nome || '';
-      const bName = b.lead?.nome || '';
-      
-      return sortDirection === 'asc'
-        ? aName.localeCompare(bName)
-        : bName.localeCompare(aName);
-    }
-    return 0;
-  });
-
-  const filteredTasks = sortedTasks.filter(task => 
-    task.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (task.responsavel?.name && task.responsavel.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (task.lead?.nome && task.lead.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredTasks = useMemo(
+    () =>
+      tasks.filter(
+        (task) =>
+          task.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          task.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (task.responsavel?.name &&
+            task.responsavel.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())) ||
+          (task.lead?.nome &&
+            task.lead.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+      ),
+    [tasks, searchTerm]
   );
+
+  const handleSort = useCallback(
+    (field: SortField) => {
+      if (field === sortField) {
+        setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      } else {
+        setSortField(field);
+        setSortDirection("asc");
+      }
+    },
+    [sortField, sortDirection]
+  );
+
+  const sortedTasks = useMemo(() => {
+    return [...filteredTasks].sort((a, b) => {
+      // Lógica de ordenação baseada no campo
+      if (sortField === "titulo") {
+        return sortDirection === "asc"
+          ? a.titulo.localeCompare(b.titulo)
+          : b.titulo.localeCompare(a.titulo);
+      }
+      if (sortField === "prazo") {
+        return sortDirection === "asc"
+          ? new Date(a.prazo).getTime() - new Date(b.prazo).getTime()
+          : new Date(b.prazo).getTime() - new Date(a.prazo).getTime();
+      }
+      if (sortField === "status") {
+        return sortDirection === "asc"
+          ? a.status.localeCompare(b.status)
+          : b.status.localeCompare(a.status);
+      }
+      if (sortField === "prioridade") {
+        const prioridadeOrder: Record<TaskPriority, number> = {
+          baixa: 1,
+          media: 2,
+          alta: 3,
+          urgente: 4,
+        };
+
+        return sortDirection === "asc"
+          ? prioridadeOrder[a.prioridade] - prioridadeOrder[b.prioridade]
+          : prioridadeOrder[b.prioridade] - prioridadeOrder[a.prioridade];
+      }
+      if (sortField === "responsavel") {
+        const aName = a.responsavel?.name || "";
+        const bName = b.responsavel?.name || "";
+
+        return sortDirection === "asc"
+          ? aName.localeCompare(bName)
+          : bName.localeCompare(aName);
+      }
+      if (sortField === "lead") {
+        const aName = a.lead?.nome || "";
+        const bName = b.lead?.nome || "";
+
+        return sortDirection === "asc"
+          ? aName.localeCompare(bName)
+          : bName.localeCompare(aName);
+      }
+      return 0;
+    });
+  }, [filteredTasks, sortField, sortDirection]);
 
   const isPastDue = (date: string) => {
     return new Date(date) < new Date();
@@ -142,78 +162,106 @@ const TasksTable = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead 
+              <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('titulo')}
+                onClick={() => handleSort("titulo")}
               >
                 Título
-                {sortField === 'titulo' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "titulo" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
-              <TableHead 
+              <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('prazo')}
+                onClick={() => handleSort("prazo")}
               >
                 Prazo
-                {sortField === 'prazo' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "prazo" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
               <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('status')}
+                onClick={() => handleSort("status")}
               >
                 Estado
-                {sortField === 'status' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "status" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
               <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('prioridade')}
+                onClick={() => handleSort("prioridade")}
               >
                 Prioridade
-                {sortField === 'prioridade' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "prioridade" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
               <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('responsavel')}
+                onClick={() => handleSort("responsavel")}
               >
                 Responsável
-                {sortField === 'responsavel' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "responsavel" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
               <TableHead
                 className="cursor-pointer"
-                onClick={() => handleSort('lead')}
+                onClick={() => handleSort("lead")}
               >
                 Lead
-                {sortField === 'lead' && (
-                  sortDirection === 'asc' ? <ChevronUp className="inline h-4 w-4 ml-1" /> : <ChevronDown className="inline h-4 w-4 ml-1" />
-                )}
+                {sortField === "lead" &&
+                  (sortDirection === "asc" ? (
+                    <ChevronUp className="inline h-4 w-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline h-4 w-4 ml-1" />
+                  ))}
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredTasks.length > 0 ? (
               filteredTasks.map((task) => (
-                <TableRow 
-                  key={task.id} 
+                <TableRow
+                  key={task.id}
                   className="cursor-pointer hover:bg-muted/50"
                 >
                   <TableCell>
                     <div>
                       <div className="font-medium">{task.titulo}</div>
-                      <div className="text-sm text-muted-foreground line-clamp-1">{task.descricao}</div>
+                      <div className="text-sm text-muted-foreground line-clamp-1">
+                        {task.descricao}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className={`${isPastDue(task.prazo) && task.status !== 'concluida' ? 'text-red-600 font-medium' : ''}`}>
-                      {format(new Date(task.prazo), 'dd MMM yyyy', {locale: ptBR})}
+                    <div
+                      className={`${
+                        isPastDue(task.prazo) && task.status !== "concluida"
+                          ? "text-red-600 font-medium"
+                          : ""
+                      }`}
+                    >
+                      {format(new Date(task.prazo), "dd MMM yyyy", {
+                        locale: ptBR,
+                      })}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -223,11 +271,9 @@ const TasksTable = () => {
                     <StatusBadge status={task.prioridade} />
                   </TableCell>
                   <TableCell>
-                    {task.responsavel?.name || 'Não atribuído'}
+                    {task.responsavel?.name || "Não atribuído"}
                   </TableCell>
-                  <TableCell>
-                    {task.lead?.nome || '-'}
-                  </TableCell>
+                  <TableCell>{task.lead?.nome || "-"}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -244,4 +290,5 @@ const TasksTable = () => {
   );
 };
 
+const TasksTable = memo(TasksTableComponent);
 export default TasksTable;

@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Search, Plus, Filter, Calendar, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { memo, useMemo, useState, useEffect } from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Search, Plus, Filter, Calendar, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { getTarefasByStatus } from '@/services/mockData';
-import { Tarefa } from '@/types/models';
+} from "@/components/ui/dropdown-menu";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { getTarefasByStatus } from "@/services/mockData";
+import { Tarefa } from "@/types/models";
 
-const TasksCards = () => {
+const TasksCardsComponent = () => {
   const [tasks, setTasks] = useState<Tarefa[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // Carrega tarefas do serviço mockado
@@ -26,11 +26,20 @@ const TasksCards = () => {
     setTasks(allTasks);
   }, []);
 
-  const filteredTasks = tasks.filter(task => 
-    task.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (task.responsavel?.name && task.responsavel.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (task.lead?.nome && task.lead.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredTasks = useMemo(
+    () =>
+      tasks.filter(
+        (task) =>
+          task.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          task.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (task.responsavel?.name &&
+            task.responsavel.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())) ||
+          (task.lead?.nome &&
+            task.lead.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+      ),
+    [tasks, searchTerm]
   );
 
   const isPastDue = (date: string) => {
@@ -72,36 +81,50 @@ const TasksCards = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredTasks.length > 0 ? (
           filteredTasks.map((task) => (
-            <Card key={task.id} className="h-full hover:shadow-md transition-shadow">
+            <Card
+              key={task.id}
+              className="h-full hover:shadow-md transition-shadow"
+            >
               <CardContent className="p-5">
                 <div className="flex flex-col space-y-3">
                   <div className="flex justify-between items-start">
                     <h3 className="font-medium text-lg">{task.titulo}</h3>
                     <StatusBadge status={task.status} />
                   </div>
-                  
-                  <p className="text-sm text-muted-foreground line-clamp-2">{task.descricao}</p>
-                  
+
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {task.descricao}
+                  </p>
+
                   <div className="flex flex-col space-y-2 text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className={`${isPastDue(task.prazo) && task.status !== 'concluida' ? 'text-red-600 font-medium' : ''}`}>
-                        {format(new Date(task.prazo), 'dd MMM yyyy', {locale: ptBR})}
+                      <span
+                        className={`${
+                          isPastDue(task.prazo) && task.status !== "concluida"
+                            ? "text-red-600 font-medium"
+                            : ""
+                        }`}
+                      >
+                        {format(new Date(task.prazo), "dd MMM yyyy", {
+                          locale: ptBR,
+                        })}
                       </span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <span>{task.responsavel?.name || 'Não atribuído'}</span>
+                      <span>{task.responsavel?.name || "Não atribuído"}</span>
                     </div>
-                    
+
                     {task.lead && (
                       <div className="text-xs text-muted-foreground border-t pt-2 mt-1">
-                        <span className="font-medium">Lead:</span> {task.lead.nome}
+                        <span className="font-medium">Lead:</span>{" "}
+                        {task.lead.nome}
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="mt-auto pt-2">
                     <StatusBadge status={task.prioridade} />
                   </div>
@@ -119,4 +142,5 @@ const TasksCards = () => {
   );
 };
 
+const TasksCards = memo(TasksCardsComponent);
 export default TasksCards;

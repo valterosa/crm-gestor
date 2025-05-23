@@ -1,10 +1,9 @@
-
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { mockUsers } from '@/services/mockData';
-import { useAuth } from '@/contexts/AuthContext';
-import { User } from '@/types';
-import { UserRole } from '@/types';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { mockUsers } from "@/services/mockData";
+import { useAuth } from "@/contexts/AuthContext";
+import { User } from "@/types";
+import { UserRole } from "@/types";
 import {
   Table,
   TableBody,
@@ -12,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   Card,
   CardContent,
@@ -20,7 +19,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,21 +39,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
-import { ArrowLeft, Plus, Pencil, Trash, Users } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { ArrowLeft, Plus, Pencil, Trash, Users } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface UserFormData {
   id?: string;
@@ -73,11 +72,11 @@ const UserManagement = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [userToEdit, setUserToEdit] = useState<User | null>(null);
   const [formData, setFormData] = useState<UserFormData>({
-    name: '',
-    email: '',
-    role: 'salesperson',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    email: "",
+    role: "salesperson",
+    password: "",
+    confirmPassword: "",
   });
 
   useEffect(() => {
@@ -99,22 +98,22 @@ const UserManagement = () => {
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      email: '',
-      role: 'salesperson',
-      password: '',
-      confirmPassword: '',
+      name: "",
+      email: "",
+      role: "salesperson",
+      password: "",
+      confirmPassword: "",
     });
     setUserToEdit(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleRoleChange = (value: string) => {
-    setFormData(prev => ({ ...prev, role: value as UserRole }));
+    setFormData((prev) => ({ ...prev, role: value as UserRole }));
   };
 
   const handleCreateSubmit = (e: React.FormEvent) => {
@@ -125,7 +124,7 @@ const UserManagement = () => {
       toast({
         title: "Erro",
         description: "Todos os campos são obrigatórios.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -134,7 +133,7 @@ const UserManagement = () => {
       toast({
         title: "Erro",
         description: "As passwords não coincidem.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -149,13 +148,13 @@ const UserManagement = () => {
       updatedAt: new Date().toISOString(),
     };
 
-    setUsers(prev => [...prev, newUser]);
+    setUsers((prev) => [...prev, newUser]);
     setOpenCreateDialog(false);
     resetForm();
 
     toast({
       title: "Utilizador criado",
-      description: `${newUser.name} foi adicionado com sucesso.`
+      description: `${newUser.name} foi adicionado com sucesso.`,
     });
   };
 
@@ -169,7 +168,7 @@ const UserManagement = () => {
       toast({
         title: "Erro",
         description: "Todos os campos são obrigatórios.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -178,44 +177,46 @@ const UserManagement = () => {
       toast({
         title: "Erro",
         description: "As passwords não coincidem.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
     // Simular edição de utilizador
-    setUsers(prev => prev.map(user => 
-      user.id === formData.id 
-        ? { 
-            ...user, 
-            name: formData.name, 
-            email: formData.email, 
-            role: formData.role,
-            updatedAt: new Date().toISOString()
-          }
-        : user
-    ));
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === formData.id
+          ? {
+              ...user,
+              name: formData.name,
+              email: formData.email,
+              role: formData.role,
+              updatedAt: new Date().toISOString(),
+            }
+          : user
+      )
+    );
 
     setOpenEditDialog(false);
     resetForm();
 
     toast({
       title: "Utilizador atualizado",
-      description: `${formData.name} foi atualizado com sucesso.`
+      description: `${formData.name} foi atualizado com sucesso.`,
     });
   };
 
   const handleDeleteUser = (userId: string) => {
-    setUsers(prev => prev.filter(user => user.id !== userId));
-    
+    setUsers((prev) => prev.filter((user) => user.id !== userId));
+
     toast({
       title: "Utilizador removido",
-      description: "O utilizador foi removido com sucesso."
+      description: "O utilizador foi removido com sucesso.",
     });
   };
 
-  if (!hasPermission('manage_users')) {
-    navigate('/denied');
+  if (!hasPermission("manage_users")) {
+    navigate("/denied");
     return null;
   }
 
@@ -223,19 +224,19 @@ const UserManagement = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => navigate('/configuracoes')}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/configuracoes")}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex items-center gap-2">
-            <Users className="h-6 w-6 text-uniga-blue" />
+            <Users className="h-6 w-6 text-primary" />
             <h1 className="text-2xl font-bold">Gestão de Utilizadores</h1>
           </div>
         </div>
-        
+
         <Dialog open={openCreateDialog} onOpenChange={setOpenCreateDialog}>
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
@@ -275,8 +276,8 @@ const UserManagement = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="role">Perfil</Label>
-                  <Select 
-                    value={formData.role} 
+                  <Select
+                    value={formData.role}
                     onValueChange={handleRoleChange}
                     required
                   >
@@ -314,7 +315,11 @@ const UserManagement = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setOpenCreateDialog(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpenCreateDialog(false)}
+                >
                   Cancelar
                 </Button>
                 <Button type="submit">Criar Utilizador</Button>
@@ -348,21 +353,29 @@ const UserManagement = () => {
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    {user.role === 'admin' ? 'Administrador' : 
-                     user.role === 'manager' ? 'Gestor de Vendas' : 'Vendedor'}
+                    {user.role === "admin"
+                      ? "Administrador"
+                      : user.role === "manager"
+                      ? "Gestor de Vendas"
+                      : "Vendedor"}
                   </TableCell>
                   <TableCell>
-                    {format(new Date(user.createdAt), 'dd MMM yyyy', {locale: ptBR})}
+                    {format(new Date(user.createdAt), "dd MMM yyyy", {
+                      locale: ptBR,
+                    })}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Dialog open={openEditDialog && userToEdit?.id === user.id} onOpenChange={(open) => {
-                        setOpenEditDialog(open);
-                        if (!open) setUserToEdit(null);
-                      }}>
+                      <Dialog
+                        open={openEditDialog && userToEdit?.id === user.id}
+                        onOpenChange={(open) => {
+                          setOpenEditDialog(open);
+                          if (!open) setUserToEdit(null);
+                        }}
+                      >
                         <DialogTrigger asChild>
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => {
                               setUserToEdit(user);
@@ -404,8 +417,8 @@ const UserManagement = () => {
                               </div>
                               <div className="space-y-2">
                                 <Label htmlFor="edit-role">Perfil</Label>
-                                <Select 
-                                  value={formData.role} 
+                                <Select
+                                  value={formData.role}
                                   onValueChange={handleRoleChange}
                                   required
                                 >
@@ -413,43 +426,59 @@ const UserManagement = () => {
                                     <SelectValue placeholder="Selecione um perfil" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="admin">Administrador</SelectItem>
-                                    <SelectItem value="manager">Gestor de Vendas</SelectItem>
-                                    <SelectItem value="salesperson">Vendedor</SelectItem>
+                                    <SelectItem value="admin">
+                                      Administrador
+                                    </SelectItem>
+                                    <SelectItem value="manager">
+                                      Gestor de Vendas
+                                    </SelectItem>
+                                    <SelectItem value="salesperson">
+                                      Vendedor
+                                    </SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>
                               <div className="space-y-2">
-                                <Label htmlFor="edit-password">Nova Password (opcional)</Label>
+                                <Label htmlFor="edit-password">
+                                  Nova Password (opcional)
+                                </Label>
                                 <Input
                                   id="edit-password"
                                   name="password"
                                   type="password"
-                                  value={formData.password || ''}
+                                  value={formData.password || ""}
                                   onChange={handleInputChange}
                                 />
                               </div>
                               <div className="space-y-2">
-                                <Label htmlFor="edit-confirmPassword">Confirmar Nova Password</Label>
+                                <Label htmlFor="edit-confirmPassword">
+                                  Confirmar Nova Password
+                                </Label>
                                 <Input
                                   id="edit-confirmPassword"
                                   name="confirmPassword"
                                   type="password"
-                                  value={formData.confirmPassword || ''}
+                                  value={formData.confirmPassword || ""}
                                   onChange={handleInputChange}
                                 />
                               </div>
                             </div>
                             <DialogFooter>
-                              <Button type="button" variant="outline" onClick={() => setOpenEditDialog(false)}>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setOpenEditDialog(false)}
+                              >
                                 Cancelar
                               </Button>
-                              <Button type="submit">Atualizar Utilizador</Button>
+                              <Button type="submit">
+                                Atualizar Utilizador
+                              </Button>
                             </DialogFooter>
                           </form>
                         </DialogContent>
                       </Dialog>
-                      
+
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost" size="icon">
@@ -460,12 +489,13 @@ const UserManagement = () => {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Tem a certeza?</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Esta ação não pode ser revertida. O utilizador será permanentemente removido do sistema.
+                              Esta ação não pode ser revertida. O utilizador
+                              será permanentemente removido do sistema.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction 
+                            <AlertDialogAction
                               onClick={() => handleDeleteUser(user.id)}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >

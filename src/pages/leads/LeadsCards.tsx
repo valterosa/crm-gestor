@@ -1,36 +1,57 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Search, Plus, Filter, User, Phone, Mail, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { memo, useMemo, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import {
+  Search,
+  Plus,
+  Filter,
+  User,
+  Phone,
+  Mail,
+  Calendar,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { getLeadsByStatus } from '@/services/mockData';
-import { Lead } from '@/types/models';
+} from "@/components/ui/dropdown-menu";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { getLeadsByStatus } from "@/services/mockData";
+import { Lead } from "@/types/models";
 
-const LeadsCards = () => {
+interface LeadsCardsProps {
+  onOpenModal: () => void;
+  refreshTrigger?: number;
+}
+
+const LeadsCardsComponent = ({
+  onOpenModal,
+  refreshTrigger = 0,
+}: LeadsCardsProps) => {
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // Carrega leads do serviço mockado
     const leadsByStatus = getLeadsByStatus();
     const allLeads = Object.values(leadsByStatus).flat();
     setLeads(allLeads);
-  }, []);
+  }, [refreshTrigger]);
 
-  const filteredLeads = leads.filter(lead => 
-    lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLeads = useMemo(
+    () =>
+      leads.filter(
+        (lead) =>
+          lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          lead.empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          lead.email.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [leads, searchTerm]
   );
 
   return (
@@ -55,11 +76,11 @@ const LeadsCards = () => {
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Todos</DropdownMenuItem>
             <DropdownMenuItem>Os meus leads</DropdownMenuItem>
-            <DropdownMenuItem>Leads sem responsável</DropdownMenuItem>
+            <DropdownMenuItem>Leads sem responsável</DropdownMenuItem>{" "}
             <DropdownMenuItem>Leads de alto valor</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button>
+        <Button onClick={onOpenModal}>
           <Plus className="h-4 w-4 mr-2" />
           Novo Lead
         </Button>
@@ -75,11 +96,12 @@ const LeadsCards = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-medium text-lg">{lead.nome}</h3>
-                        <p className="text-sm text-muted-foreground">{lead.empresa}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {lead.empresa}
+                        </p>
                       </div>
                       <StatusBadge status={lead.status} />
                     </div>
-                    
                     <div className="flex flex-col space-y-2 text-sm">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-muted-foreground" />
@@ -91,19 +113,22 @@ const LeadsCards = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-muted-foreground" />
-                        <span>{lead.responsavel?.name || 'Não atribuído'}</span>
+                        <span>{lead.responsavel?.name || "Não atribuído"}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>{format(new Date(lead.dataRegisto), 'dd MMM yyyy', {locale: ptBR})}</span>
+                        <span>
+                          {format(new Date(lead.dataRegisto), "dd MMM yyyy", {
+                            locale: ptBR,
+                          })}
+                        </span>
                       </div>
-                    </div>
-                    
+                    </div>{" "}
                     <div className="mt-2 pt-3 border-t">
-                      <div className="text-lg font-bold text-uniga-blue">
-                        {lead.valor.toLocaleString('pt-PT', {
-                          style: 'currency',
-                          currency: 'EUR',
+                      <div className="text-lg font-bold text-primary">
+                        {lead.valor.toLocaleString("pt-PT", {
+                          style: "currency",
+                          currency: "EUR",
                           minimumFractionDigits: 0,
                         })}
                       </div>
@@ -123,4 +148,5 @@ const LeadsCards = () => {
   );
 };
 
+const LeadsCards = memo(LeadsCardsComponent);
 export default LeadsCards;

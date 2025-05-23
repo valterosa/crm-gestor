@@ -1,30 +1,42 @@
-
-import { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { useToast } from '@/hooks/use-toast';
-import { getTarefasByStatus } from '@/services/mockData';
-import { Tarefa, TaskStatus } from '@/types/models';
-import { Card, CardContent } from '@/components/ui/card';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, Plus, Filter, ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { memo, useMemo, useState, useEffect } from "react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
+import { useToast } from "@/hooks/use-toast";
+import { getTarefasByStatus } from "@/services/mockData";
+import { Tarefa, TaskStatus } from "@/types/models";
+import { Card, CardContent } from "@/components/ui/card";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Search, Plus, Filter, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+} from "@/components/ui/dropdown-menu";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const TasksKanban = () => {
   const { toast } = useToast();
-  const [tasks, setTasks] = useState<Record<TaskStatus, Tarefa[]>>({} as Record<TaskStatus, Tarefa[]>);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [collapsedColumns, setCollapsedColumns] = useState<Record<string, boolean>>({});
+  const [tasks, setTasks] = useState<Record<TaskStatus, Tarefa[]>>(
+    {} as Record<TaskStatus, Tarefa[]>
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [collapsedColumns, setCollapsedColumns] = useState<
+    Record<string, boolean>
+  >({});
 
   useEffect(() => {
     // Carregar tarefas iniciais
@@ -33,78 +45,95 @@ const TasksKanban = () => {
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
-  
+
     // Se não houver destino ou se o destino for o mesmo que a origem, não faz nada
-    if (!destination || 
-        (destination.droppableId === source.droppableId && 
-         destination.index === source.index)) {
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
       return;
     }
-  
+
     const sourceStatus = source.droppableId as TaskStatus;
     const destStatus = destination.droppableId as TaskStatus;
-  
+
     // Encontra a tarefa que está sendo arrastada
-    const draggedTask = tasks[sourceStatus].find(task => task.id === draggableId);
+    const draggedTask = tasks[sourceStatus].find(
+      (task) => task.id === draggableId
+    );
     if (!draggedTask) return;
-  
+
     // Cria cópias dos arrays de origem e destino
     const newSourceTasks = Array.from(tasks[sourceStatus]);
-    const newDestTasks = sourceStatus === destStatus ? 
-      newSourceTasks : Array.from(tasks[destStatus]);
-  
+    const newDestTasks =
+      sourceStatus === destStatus
+        ? newSourceTasks
+        : Array.from(tasks[destStatus]);
+
     // Remove a tarefa da origem
     newSourceTasks.splice(source.index, 1);
-  
+
     // Insere a tarefa no destino com o status atualizado
     const updatedTask = { ...draggedTask, status: destStatus };
-    
+
     if (sourceStatus === destStatus) {
       newSourceTasks.splice(destination.index, 0, updatedTask);
     } else {
       newDestTasks.splice(destination.index, 0, updatedTask);
     }
-  
+
     // Atualiza o estado
-    setTasks(prev => ({
+    setTasks((prev) => ({
       ...prev,
       [sourceStatus]: newSourceTasks,
-      [destStatus]: newDestTasks
+      [destStatus]: newDestTasks,
     }));
-  
+
     // Mostra toast de confirmação
     toast({
       title: "Tarefa atualizada",
-      description: `${draggedTask.titulo} movida para ${destStatus === 'pendente' ? 'Pendente' : 
-                    destStatus === 'em_progresso' ? 'Em Progresso' : 
-                    destStatus === 'concluida' ? 'Concluída' : 'Cancelada'}`,
+      description: `${draggedTask.titulo} movida para ${
+        destStatus === "pendente"
+          ? "Pendente"
+          : destStatus === "em_progresso"
+          ? "Em Progresso"
+          : destStatus === "concluida"
+          ? "Concluída"
+          : "Cancelada"
+      }`,
     });
   };
 
   const toggleColumn = (columnId: string) => {
-    setCollapsedColumns(prev => ({
+    setCollapsedColumns((prev) => ({
       ...prev,
-      [columnId]: !prev[columnId]
+      [columnId]: !prev[columnId],
     }));
   };
 
-  const statusColumns: {id: TaskStatus; title: string}[] = [
-    { id: 'pendente', title: 'Pendente' },
-    { id: 'em_progresso', title: 'Em Progresso' },
-    { id: 'concluida', title: 'Concluída' },
-    { id: 'cancelada', title: 'Cancelada' },
+  const statusColumns: { id: TaskStatus; title: string }[] = [
+    { id: "pendente", title: "Pendente" },
+    { id: "em_progresso", title: "Em Progresso" },
+    { id: "concluida", title: "Concluída" },
+    { id: "cancelada", title: "Cancelada" },
   ];
 
-  const filteredTasks = Object.fromEntries(
-    Object.entries(tasks).map(([status, tasksArray]) => {
-      return [status, tasksArray.filter(task => 
-        task.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (task.responsavel?.name && task.responsavel.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (task.lead?.nome && task.lead.nome.toLowerCase().includes(searchTerm.toLowerCase()))
-      )];
-    })
-  ) as Record<TaskStatus, Tarefa[]>;
+  const filteredTasks = useMemo(() => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return Object.fromEntries(
+      Object.entries(tasks).map(([status, tasksArray]) => [
+        status,
+        Array.isArray(tasksArray)
+          ? tasksArray.filter(
+              (task) =>
+                task.titulo.toLowerCase().includes(lowerSearch) ||
+                task.descricao.toLowerCase().includes(lowerSearch)
+            )
+          : [],
+      ])
+    ) as Record<TaskStatus, Tarefa[]>;
+  }, [tasks, searchTerm]);
 
   return (
     <div className="space-y-4">
@@ -144,11 +173,17 @@ const TasksKanban = () => {
             {statusColumns.map((column) => (
               <Collapsible
                 key={column.id}
-                className={`w-80 flex-shrink-0 flex flex-col ${collapsedColumns[column.id] ? 'h-auto' : ''}`}
+                className={`w-80 flex-shrink-0 flex flex-col ${
+                  collapsedColumns[column.id] ? "h-auto" : ""
+                }`}
                 open={!collapsedColumns[column.id]}
               >
                 <div className="bg-gray-100 rounded-t-md p-3 font-medium border">
-                  <CollapsibleTrigger asChild onClick={() => toggleColumn(column.id)} className="w-full">
+                  <CollapsibleTrigger
+                    asChild
+                    onClick={() => toggleColumn(column.id)}
+                    className="w-full"
+                  >
                     <div className="flex justify-between items-center cursor-pointer">
                       <span>{column.title}</span>
                       <div className="flex items-center">
@@ -164,7 +199,7 @@ const TasksKanban = () => {
                     </div>
                   </CollapsibleTrigger>
                 </div>
-                
+
                 <CollapsibleContent className="flex-grow">
                   <Droppable droppableId={column.id}>
                     {(provided) => (
@@ -175,7 +210,11 @@ const TasksKanban = () => {
                       >
                         <ScrollArea className="h-[400px] p-2">
                           {filteredTasks[column.id]?.map((task, index) => (
-                            <Draggable key={task.id} draggableId={task.id} index={index}>
+                            <Draggable
+                              key={task.id}
+                              draggableId={task.id}
+                              index={index}
+                            >
                               {(provided) => (
                                 <div
                                   ref={provided.innerRef}
@@ -186,21 +225,30 @@ const TasksKanban = () => {
                                   <Card className="hover:shadow-md transition-shadow bg-white">
                                     <CardContent className="p-4">
                                       <div className="flex flex-col gap-2">
-                                        <div className="font-medium">{task.titulo}</div>
-                                        <div className="text-sm text-muted-foreground line-clamp-2">{task.descricao}</div>
-                                        
+                                        <div className="font-medium">
+                                          {task.titulo}
+                                        </div>
+                                        <div className="text-sm text-muted-foreground line-clamp-2">
+                                          {task.descricao}
+                                        </div>
+
                                         {task.lead && (
                                           <div className="text-xs text-muted-foreground">
                                             Lead: {task.lead.nome}
                                           </div>
                                         )}
-                                        
+
                                         <div className="flex justify-between items-center mt-2">
                                           <div className="flex items-center">
-                                            <StatusBadge status={task.prioridade} />
+                                            <StatusBadge
+                                              status={task.prioridade}
+                                            />
                                           </div>
                                           <div className="text-xs text-muted-foreground">
-                                            {format(new Date(task.prazo), 'dd/MM/yyyy')}
+                                            {format(
+                                              new Date(task.prazo),
+                                              "dd/MM/yyyy"
+                                            )}
                                           </div>
                                         </div>
                                       </div>
@@ -225,4 +273,4 @@ const TasksKanban = () => {
   );
 };
 
-export default TasksKanban;
+export default memo(TasksKanban);

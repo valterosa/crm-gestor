@@ -1,6 +1,11 @@
-
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   BarChart,
   Bar,
@@ -13,16 +18,22 @@ import {
   PieChart,
   Pie,
   Cell,
-} from 'recharts';
-import { useAuth } from '@/contexts/AuthContext';
-import { DashboardMetric, ChartData, Lead, Task, Event } from '@/types';
-import { Calendar, CheckSquare, Users, Clipboard } from 'lucide-react';
+} from "recharts";
+import { useAuth } from "@/contexts/AuthContext";
+import { DashboardMetric, ChartData, Lead, Task, Event } from "@/types";
+import { Calendar, CheckSquare, Users, Clipboard } from "lucide-react";
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, dataMode } = useAuth();
   const [metrics, setMetrics] = useState<DashboardMetric[]>([]);
-  const [leadsData, setLeadsData] = useState<ChartData>({ labels: [], datasets: [] });
-  const [salesData, setSalesData] = useState<ChartData>({ labels: [], datasets: [] });
+  const [leadsData, setLeadsData] = useState<ChartData>({
+    labels: [],
+    datasets: [],
+  });
+  const [salesData, setSalesData] = useState<ChartData>({
+    labels: [],
+    datasets: [],
+  });
   const [upcomingTasks, setUpcomingTasks] = useState<Task[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [recentLeads, setRecentLeads] = useState<Lead[]>([]);
@@ -30,76 +41,82 @@ const Dashboard = () => {
   useEffect(() => {
     // Carregar dados do dashboard
     // Em produção, isso seria carregado a partir da API
-    
+
     // Métricas
     setMetrics([
       {
-        id: '1',
-        title: 'Leads Activos',
+        id: "1",
+        title: "Leads Activos",
         value: 124,
         previousValue: 98,
         change: 26.5,
-        changeType: 'positive',
-        icon: 'users'
+        changeType: "positive",
+        icon: "users",
       },
       {
-        id: '2',
-        title: 'Tarefas Pendentes',
+        id: "2",
+        title: "Tarefas Pendentes",
         value: 42,
         previousValue: 50,
         change: 16,
-        changeType: 'positive',
-        icon: 'tasks'
+        changeType: "positive",
+        icon: "tasks",
       },
       {
-        id: '3',
-        title: 'Taxa de Conversão',
+        id: "3",
+        title: "Taxa de Conversão",
         value: 28.4,
         previousValue: 22.5,
         change: 26.2,
-        changeType: 'positive',
-        icon: 'percent'
+        changeType: "positive",
+        icon: "percent",
       },
       {
-        id: '4',
-        title: 'Receita do Mês',
+        id: "4",
+        title: "Receita do Mês",
         value: 78500,
         previousValue: 65000,
         change: 20.8,
-        changeType: 'positive',
-        icon: 'euro'
+        changeType: "positive",
+        icon: "euro",
       },
     ]);
 
     // Dados de gráficos
     setLeadsData({
-      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+      labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
       datasets: [
         {
-          label: 'Novos Leads',
+          label: "Novos Leads",
           data: [65, 80, 81, 56, 78, 95],
-          backgroundColor: '#0045AC',
+          backgroundColor: "#0045AC",
         },
         {
-          label: 'Conversões',
+          label: "Conversões",
           data: [28, 35, 42, 33, 44, 50],
-          backgroundColor: '#00A3E0',
+          backgroundColor: "#00A3E0",
         },
       ],
     });
 
     setSalesData({
-      labels: ['Em Negociação', 'Proposta', 'Qualificado', 'Contactado', 'Novo'],
+      labels: [
+        "Em Negociação",
+        "Proposta",
+        "Qualificado",
+        "Contactado",
+        "Novo",
+      ],
       datasets: [
         {
-          label: 'Valor em €',
+          label: "Valor em €",
           data: [65000, 48000, 35000, 28000, 18000],
           backgroundColor: [
-            '#0045AC',
-            '#00A3E0',
-            '#002D62',
-            '#FFD100',
-            '#EE3124'
+            "#0045AC",
+            "#00A3E0",
+            "#002D62",
+            "#FFD100",
+            "#EE3124",
           ],
         },
       ],
@@ -108,35 +125,35 @@ const Dashboard = () => {
     // Tarefas pendentes
     setUpcomingTasks([
       {
-        id: '1',
-        title: 'Ligar para Empresa ABC',
-        description: 'Acompanhamento da proposta',
+        id: "1",
+        title: "Ligar para Empresa ABC",
+        description: "Acompanhamento da proposta",
         dueDate: new Date(Date.now() + 3600000).toISOString(),
-        status: 'pendente',
-        priority: 'alta',
-        assignedTo: user?.id || '',
+        status: "pendente",
+        priority: "alta",
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        id: '2',
-        title: 'Enviar proposta para XYZ',
-        description: 'Preparar proposta comercial',
+        id: "2",
+        title: "Enviar proposta para XYZ",
+        description: "Preparar proposta comercial",
         dueDate: new Date(Date.now() + 86400000).toISOString(),
-        status: 'pendente',
-        priority: 'média',
-        assignedTo: user?.id || '',
+        status: "pendente",
+        priority: "média",
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        id: '3',
-        title: 'Acompanhamento de cliente',
-        description: 'Verificar satisfação após implementação',
+        id: "3",
+        title: "Acompanhamento de cliente",
+        description: "Verificar satisfação após implementação",
         dueDate: new Date(Date.now() + 172800000).toISOString(),
-        status: 'pendente',
-        priority: 'baixa',
-        assignedTo: user?.id || '',
+        status: "pendente",
+        priority: "baixa",
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -145,24 +162,24 @@ const Dashboard = () => {
     // Eventos próximos
     setUpcomingEvents([
       {
-        id: '1',
-        title: 'Reunião com cliente ABC',
-        description: 'Apresentação da proposta final',
+        id: "1",
+        title: "Reunião com cliente ABC",
+        description: "Apresentação da proposta final",
         start: new Date(Date.now() + 7200000).toISOString(),
         end: new Date(Date.now() + 9000000).toISOString(),
-        location: 'Escritório ABC',
-        createdBy: user?.id || '',
+        location: "Escritório ABC",
+        createdBy: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        id: '2',
-        title: 'Demonstração de produto',
-        description: 'Demonstração para potencial cliente',
+        id: "2",
+        title: "Demonstração de produto",
+        description: "Demonstração para potencial cliente",
         start: new Date(Date.now() + 10800000).toISOString(),
         end: new Date(Date.now() + 12600000).toISOString(),
-        location: 'Online - Zoom',
-        createdBy: user?.id || '',
+        location: "Online - Zoom",
+        createdBy: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -171,104 +188,113 @@ const Dashboard = () => {
     // Leads recentes
     setRecentLeads([
       {
-        id: '1',
-        name: 'João Silva',
-        company: 'Empresa ABC',
-        email: 'joao.silva@abc.com',
-        phone: '912345678',
-        status: 'qualificado',
+        id: "1",
+        name: "João Silva",
+        company: "Empresa ABC",
+        email: "joao.silva@abc.com",
+        phone: "912345678",
+        status: "qualificado",
         value: 15000,
-        assignedTo: user?.id || '',
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        id: '2',
-        name: 'Maria Pereira',
-        company: 'XYZ Tecnologia',
-        email: 'maria.pereira@xyz.com',
-        phone: '923456789',
-        status: 'proposta',
+        id: "2",
+        name: "Maria Pereira",
+        company: "XYZ Tecnologia",
+        email: "maria.pereira@xyz.com",
+        phone: "923456789",
+        status: "proposta",
         value: 28000,
-        assignedTo: user?.id || '',
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        id: '3',
-        name: 'António Costa',
-        company: 'Empresa DEF',
-        email: 'antonio.costa@def.com',
-        phone: '934567890',
-        status: 'novo',
+        id: "3",
+        name: "António Costa",
+        company: "Empresa DEF",
+        email: "antonio.costa@def.com",
+        phone: "934567890",
+        status: "novo",
         value: 8500,
-        assignedTo: user?.id || '',
+        assignedTo: user?.id || "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
     ]);
   }, [user]);
 
+  useEffect(() => {
+    if (dataMode === "Criar Dados Novos") {
+      setMetrics([]);
+      setLeadsData({ labels: [], datasets: [] });
+      setSalesData({ labels: [], datasets: [] });
+      setUpcomingTasks([]);
+      setUpcomingEvents([]);
+      setRecentLeads([]);
+    }
+  }, [dataMode]);
+
   // Função para formatar valores monetários
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-PT', {
-      style: 'currency',
-      currency: 'EUR'
+    return new Intl.NumberFormat("pt-PT", {
+      style: "currency",
+      currency: "EUR",
     }).format(value);
   };
 
   // Função para formatar data
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-PT', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleDateString("pt-PT", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
-
   // Função para determinar a cor da prioridade
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'alta':
-        return 'text-uniga-red';
-      case 'média':
-        return 'text-uniga-yellow';
-      case 'baixa':
-        return 'text-uniga-green';
+      case "alta":
+        return "text-destructive";
+      case "média":
+        return "text-yellow-500";
+      case "baixa":
+        return "text-green-500";
       default:
-        return 'text-gray-500';
+        return "text-gray-500";
     }
   };
 
   // Função para determinar a cor do status
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'novo':
-        return 'bg-blue-100 text-blue-800';
-      case 'contactado':
-        return 'bg-purple-100 text-purple-800';
-      case 'qualificado':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'proposta':
-        return 'bg-orange-100 text-orange-800';
-      case 'negociação':
-        return 'bg-pink-100 text-pink-800';
-      case 'ganho':
-        return 'bg-green-100 text-green-800';
-      case 'perdido':
-        return 'bg-red-100 text-red-800';
+      case "novo":
+        return "bg-blue-100 text-blue-800";
+      case "contactado":
+        return "bg-purple-100 text-purple-800";
+      case "qualificado":
+        return "bg-yellow-100 text-yellow-800";
+      case "proposta":
+        return "bg-orange-100 text-orange-800";
+      case "negociação":
+        return "bg-pink-100 text-pink-800";
+      case "ganho":
+        return "bg-green-100 text-green-800";
+      case "perdido":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
-
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-uniga-blue">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
         <p className="text-gray-500">Bem-vindo de volta, {user?.name}!</p>
       </div>
 
@@ -280,19 +306,34 @@ const Dashboard = () => {
               <div>
                 <p className="text-sm text-gray-500">{metric.title}</p>
                 <p className="text-2xl font-bold">
-                  {metric.title.includes('Receita') ? formatCurrency(metric.value) : 
-                   metric.title.includes('Taxa') ? `${metric.value}%` : 
-                   metric.value.toLocaleString('pt-PT')}
+                  {metric.title.includes("Receita")
+                    ? formatCurrency(metric.value)
+                    : metric.title.includes("Taxa")
+                    ? `${metric.value}%`
+                    : metric.value.toLocaleString("pt-PT")}
                 </p>
-                <p className={`text-xs flex items-center ${metric.changeType === 'positive' ? 'text-uniga-green' : 'text-uniga-red'}`}>
-                  {metric.changeType === 'positive' ? '↑' : '↓'} {metric.change}%
+                <p
+                  className={`text-xs flex items-center ${
+                    metric.changeType === "positive"
+                      ? "text-success"
+                      : "text-accent"
+                  }`}
+                >
+                  {metric.changeType === "positive" ? "↑" : "↓"} {metric.change}
+                  %
                 </p>
               </div>
-              <div className="bg-uniga-blue/10 p-3 rounded-full">
-                {metric.icon === 'users' ? <Users className="h-6 w-6 text-uniga-blue" /> : 
-                 metric.icon === 'tasks' ? <CheckSquare className="h-6 w-6 text-uniga-blue" /> : 
-                 metric.icon === 'percent' ? <Clipboard className="h-6 w-6 text-uniga-blue" /> : 
-                 <Calendar className="h-6 w-6 text-uniga-blue" />}
+              <div className="bg-primary/10 p-3 rounded-full">
+                {" "}
+                {metric.icon === "users" ? (
+                  <Users className="h-6 w-6 text-primary" />
+                ) : metric.icon === "tasks" ? (
+                  <CheckSquare className="h-6 w-6 text-primary" />
+                ) : metric.icon === "percent" ? (
+                  <Clipboard className="h-6 w-6 text-primary" />
+                ) : (
+                  <Calendar className="h-6 w-6 text-primary" />
+                )}
               </div>
             </CardContent>
           </Card>
@@ -313,7 +354,7 @@ const Dashboard = () => {
                   data={leadsData.labels.map((label, index) => ({
                     name: label,
                     "Novos Leads": leadsData.datasets[0].data[index],
-                    "Conversões": leadsData.datasets[1].data[index],
+                    Conversões: leadsData.datasets[1].data[index],
                   }))}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -346,21 +387,26 @@ const Dashboard = () => {
                     cx="50%"
                     cy="50%"
                     labelLine={true}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) =>
+                      `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                     outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
                   >
                     {salesData.labels.map((_, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={salesData.datasets[0].backgroundColor instanceof Array ? 
-                              salesData.datasets[0].backgroundColor[index] : 
-                              salesData.datasets[0].backgroundColor as string} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          salesData.datasets[0].backgroundColor instanceof Array
+                            ? salesData.datasets[0].backgroundColor[index]
+                            : (salesData.datasets[0].backgroundColor as string)
+                        }
+                      />
                     ))}
                   </Pie>
-                  <Tooltip 
-                    formatter={(value) => formatCurrency(value as number)} 
+                  <Tooltip
+                    formatter={(value) => formatCurrency(value as number)}
                   />
                   <Legend />
                 </PieChart>
@@ -385,11 +431,20 @@ const Dashboard = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-medium">{task.title}</h3>
-                      <p className="text-sm text-gray-500">{task.description}</p>
+                      <p className="text-sm text-gray-500">
+                        {task.description}
+                      </p>
                     </div>
-                    <span className={`text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                      {task.priority === 'alta' ? 'Alta' : 
-                       task.priority === 'média' ? 'Média' : 'Baixa'}
+                    <span
+                      className={`text-xs font-medium ${getPriorityColor(
+                        task.priority
+                      )}`}
+                    >
+                      {task.priority === "alta"
+                        ? "Alta"
+                        : task.priority === "média"
+                        ? "Média"
+                        : "Baixa"}
                     </span>
                   </div>
                   <p className="text-xs text-gray-400 mt-1">
@@ -397,15 +452,16 @@ const Dashboard = () => {
                   </p>
                 </div>
               ))}
-
               {upcomingTasks.length === 0 && (
                 <p className="text-center text-gray-500 py-4">
                   Não há tarefas pendentes.
                 </p>
-              )}
-
+              )}{" "}
               <div className="text-center mt-2">
-                <a href="/tarefas" className="text-uniga-blue text-sm hover:underline">
+                <a
+                  href="/tarefas"
+                  className="text-primary text-sm hover:underline"
+                >
                   Ver todas as tarefas
                 </a>
               </div>
@@ -426,7 +482,9 @@ const Dashboard = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-medium">{event.title}</h3>
-                      <p className="text-sm text-gray-500">{event.description}</p>
+                      <p className="text-sm text-gray-500">
+                        {event.description}
+                      </p>
                       <div className="flex items-center text-xs text-gray-400 mt-1">
                         <span className="mr-2">{formatDate(event.start)}</span>
                         <span className="bg-gray-200 px-2 py-0.5 rounded text-gray-600">
@@ -437,15 +495,16 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
-
               {upcomingEvents.length === 0 && (
                 <p className="text-center text-gray-500 py-4">
                   Não há eventos próximos.
                 </p>
-              )}
-
+              )}{" "}
               <div className="text-center mt-2">
-                <a href="/calendario" className="text-uniga-blue text-sm hover:underline">
+                <a
+                  href="/calendario"
+                  className="text-primary text-sm hover:underline"
+                >
                   Ver calendário completo
                 </a>
               </div>
@@ -479,20 +538,26 @@ const Dashboard = () => {
                     <td className="py-3">{lead.name}</td>
                     <td>{lead.company}</td>
                     <td>
-                      <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(lead.status)}`}>
-                        {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusColor(
+                          lead.status
+                        )}`}
+                      >
+                        {lead.status.charAt(0).toUpperCase() +
+                          lead.status.slice(1)}
                       </span>
                     </td>
                     <td>{formatCurrency(lead.value)}</td>
-                    <td>{new Date(lead.createdAt).toLocaleDateString('pt-PT')}</td>
+                    <td>
+                      {new Date(lead.createdAt).toLocaleDateString("pt-PT")}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-
+          </div>{" "}
           <div className="text-center mt-4">
-            <a href="/leads" className="text-uniga-blue text-sm hover:underline">
+            <a href="/leads" className="text-primary text-sm hover:underline">
               Ver todos os leads
             </a>
           </div>

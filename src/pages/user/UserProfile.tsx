@@ -1,8 +1,7 @@
-
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -10,32 +9,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
-import { Label } from '@/components/ui/label';
-import { toast } from '@/hooks/use-toast';
-import { User, Lock } from 'lucide-react';
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
+import { User, Lock } from "lucide-react";
 
 const UserProfile = () => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    name: user?.name || "",
+    email: user?.email || "",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
@@ -43,56 +37,56 @@ const UserProfile = () => {
       description: "As suas informações foram atualizadas com sucesso.",
     });
   };
-  
+
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validação de password
     if (formData.newPassword !== formData.confirmPassword) {
       toast({
         title: "Erro",
         description: "As passwords não coincidem.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     if (formData.newPassword.length < 6) {
       toast({
         title: "Erro",
         description: "A password deve ter pelo menos 6 caracteres.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     toast({
       title: "Password atualizada",
       description: "A sua password foi atualizada com sucesso.",
     });
-    
+
     // Limpar os campos de password
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: ''
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     }));
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <User className="h-6 w-6 text-uniga-blue" />
+        <User className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">O Meu Perfil</h1>
       </div>
-      
+
       <Tabs defaultValue="profile" className="w-full">
         <TabsList>
           <TabsTrigger value="profile">Perfil</TabsTrigger>
           <TabsTrigger value="password">Password</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="profile">
           <Card>
             <CardHeader>
@@ -124,12 +118,15 @@ const UserProfile = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>Nível de Acesso</Label>
                   <div className="p-2 bg-gray-100 rounded-md">
-                    {user?.role === 'admin' ? 'Administrador' : 
-                     user?.role === 'manager' ? 'Gestor de Vendas' : 'Vendedor'}
+                    {user?.role === "admin"
+                      ? "Administrador"
+                      : user?.role === "manager"
+                      ? "Gestor de Vendas"
+                      : "Vendedor"}
                   </div>
                 </div>
               </CardContent>
@@ -141,7 +138,7 @@ const UserProfile = () => {
             </form>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="password">
           <Card>
             <CardHeader>
@@ -175,7 +172,9 @@ const UserProfile = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirmar Nova Password</Label>
+                  <Label htmlFor="confirmPassword">
+                    Confirmar Nova Password
+                  </Label>
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"

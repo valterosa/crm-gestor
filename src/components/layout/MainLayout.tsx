@@ -1,9 +1,9 @@
-
-import { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import Sidebar from './Sidebar';
-import TopBar from './TopBar';
-import { useAuth } from '@/contexts/AuthContext';
+import { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import Sidebar from "./Sidebar";
+import TopBar from "./TopBar";
+import { useAuth } from "@/contexts/AuthContext";
+import GlobalDebugTools from "../GlobalDebugTools";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -16,7 +16,6 @@ const MainLayout = ({ children, className }: MainLayoutProps) => {
   if (!isAuthenticated) {
     return <>{children}</>;
   }
-
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
@@ -26,6 +25,7 @@ const MainLayout = ({ children, className }: MainLayoutProps) => {
           {children}
         </main>
       </div>
+      <GlobalDebugTools />
     </div>
   );
 };
