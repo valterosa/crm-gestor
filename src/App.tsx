@@ -7,11 +7,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ErrorProvider } from "./contexts/ErrorContext";
 import { AppConfigProvider } from "./contexts/AppConfigContext";
-import { ThemeInjector } from "./components/ThemeInjector"; // Updated import path
+import { ThemeInjector } from "./components/ThemeInjector";
 import { MockDataSynchronizer } from "./services/mockDataSync";
 import MainLayout from "./components/layout/MainLayout";
 import AuthGuard from "./components/AuthGuard";
 import ErrorBoundary from "./components/ErrorBoundary";
+import SecurityMonitoringPanel from "./components/debug/SecurityMonitoringPanel";
 
 // Páginas
 const Login = lazy(() => import("./pages/Login"));
@@ -50,10 +51,8 @@ const App = () => (
                   <Routes>
                     {/* Rota pública - Login */}
                     <Route path="/login" element={<Login />} />
-
                     {/* Rota de acesso negado */}
                     <Route path="/denied" element={<AccessDenied />} />
-
                     {/* Rotas protegidas - Dashboard */}
                     <Route
                       path="/dashboard"
@@ -65,7 +64,6 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
                     {/* Rotas protegidas - Leads */}
                     <Route
                       path="/leads"
@@ -87,7 +85,6 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
                     {/* Rotas protegidas - Calendário */}
                     <Route
                       path="/calendario"
@@ -99,7 +96,6 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
                     {/* Rotas protegidas - Tarefas */}
                     <Route
                       path="/tarefas"
@@ -111,7 +107,6 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
                     {/* Rotas protegidas - Perfil de Utilizador */}
                     <Route
                       path="/perfil"
@@ -123,7 +118,6 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
                     {/* Rotas protegidas - Configurações */}
                     <Route
                       path="/configuracoes"
@@ -145,17 +139,18 @@ const App = () => (
                         </AuthGuard>
                       }
                     />
-
-                    {/* Redirecionar raiz para dashboard */}
+                    {/* Redirecionar raiz para dashboard */}{" "}
                     <Route
                       path="/"
                       element={<Navigate to="/dashboard" replace />}
                     />
-
                     {/* Rota 404 */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
+
+                {/* Painel de Monitoramento de Segurança (apenas em desenvolvimento) */}
+                <SecurityMonitoringPanel />
               </BrowserRouter>
             </AuthProvider>
           </AppConfigProvider>

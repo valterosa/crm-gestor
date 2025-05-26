@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { mockUsers } from "@/services/mockData";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { User } from "@/types";
 import { UserRole } from "@/types";
+import { validateData, userSchema } from "@/lib/validation";
+import { sanitizeInput } from "@/lib/security";
 import {
   Table,
   TableBody,

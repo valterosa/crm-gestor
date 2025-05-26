@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { SecureInput } from "@/components/ui/secure-input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { validateData, loginSchema } from "@/lib/validation";
+import { sanitizeInput } from "@/lib/security";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,26 +26,43 @@ const Login = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    console.log("handleSubmit called");
-    console.log("useDemoData value:", useDemoData);
-    console.log("handleSubmit triggered"); // Adicionado para confirmar se a função é chamada
-
     try {
+      // Sanitizar inputs antes da validação
+      const sanitizedEmail = sanitizeInput(email);
+      const sanitizedPassword = sanitizeInput(password);
+
+      // Validar dados com Zod
+      const validationResult = validateData(loginSchema, {
+        email: sanitizedEmail,
+        password: sanitizedPassword,
+      });
+
+      if (!validationResult.success) {
+        setError(validationResult.errors[0] || "Dados inválidos");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("handleSubmit called");
+      console.log("useDemoData value:", useDemoData);
+      console.log("handleSubmit triggered");
+
       // Armazena a escolha do utilizador no localStorage
       localStorage.setItem("useDemoData", JSON.stringify(useDemoData));
 
-      await login(email, password);
+      await login(sanitizedEmail, sanitizedPassword);
       toast.success("Login realizado com sucesso!");
       navigate("/dashboard");
-    } catch (err) {
-      setError("Email ou password incorretos.");
-      toast.error("Falha no login. Verifique as suas credenciais.");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Email ou password incorretos.";
+      setError(errorMessage);
+      toast.error("Falha no login. " + errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -74,18 +93,19 @@ const Login = () => {
             className="space-y-4"
             data-testid="login-form"
           >
+            {" "}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>{" "}
-              <Input
+              <SecureInput
                 id="email"
                 type="email"
                 placeholder="seu.email@empresa.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                securityContext="login.email"
                 required
               />
             </div>
-
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>{" "}
@@ -93,16 +113,16 @@ const Login = () => {
                   Esqueceu a password?
                 </a>
               </div>
-              <Input
+              <SecureInput
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                securityContext="login.password"
                 required
               />
             </div>
-
             <div className="space-y-2">
               <Label>Modo de Dados</Label>
               <div className="flex items-center gap-4">
@@ -132,7 +152,6 @@ const Login = () => {
                 </label>
               </div>
             </div>
-
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-primary/90"
