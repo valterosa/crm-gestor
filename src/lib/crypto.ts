@@ -257,7 +257,7 @@ export class RateLimiter {
     windowMs: number = 15 * 60 * 1000
   ): boolean {
     const now = Date.now();
-    const attempts = this.attempts.get(key) || [];
+    const attempts = this.attempts.get(key) ?? [];
 
     // Remove tentativas antigas
     const validAttempts = attempts.filter((time) => now - time < windowMs);
