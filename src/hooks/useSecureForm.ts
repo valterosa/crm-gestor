@@ -5,7 +5,7 @@ import { sanitizeInput } from "@/lib/security";
 /**
  * Hook para criar inputs seguros em formulários
  */
-export const useSecureForm = (formContext: string = "form") => {
+export const useSecureForm = (formContext = "form") => {
   const { monitorInput } = useSecurityMonitoring();
   const [suspiciousFields, setSuspiciousFields] = useState<Set<string>>(
     new Set()
