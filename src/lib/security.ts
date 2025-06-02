@@ -1,5 +1,5 @@
-<<<<<<< Updated upstream
 import DOMPurify from "dompurify";
+import { User } from "../types";
 
 // Configuração baseada no ambiente
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -51,8 +51,8 @@ export const sanitizeInput = (
     removeExtraSpaces = true,
   } = options;
 
-  let sanitized = input;
-  // Remover caracteres de controle (escape the control characters)
+  let sanitized = input; // Remover caracteres de controle (escape the control characters)
+  // eslint-disable-next-line no-control-regex
   sanitized = sanitized.replace(/[\u0000-\u001F\u007F]/g, "");
 
   // Usar DOMPurify se HTML for permitido, caso contrário sanitização básica
@@ -177,11 +177,14 @@ export const sanitizeFilename = (
   filename: string | undefined | null
 ): string => {
   if (!filename) return "";
-  return filename
-    .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "")
-    .replace(/^\.+/, "") // Remove pontos no início
-    .trim()
-    .substring(0, 255); // Limite de comprimento
+  return (
+    filename
+      // eslint-disable-next-line no-control-regex
+      .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "")
+      .replace(/^\.+/, "") // Remove pontos no início
+      .trim()
+      .substring(0, 255)
+  ); // Limite de comprimento
 };
 
 /**
@@ -235,23 +238,6 @@ export const SECURITY_CONFIG = {
     strictValidation: true,
     allowDebugHeaders: false,
   },
-};
-
-/**
- * Obtém configuração de segurança baseada no ambiente
- */
-export const getSecurityConfig = () => {
-  const env = process.env.NODE_ENV || "development";
-  return (
-    SECURITY_CONFIG[env as keyof typeof SECURITY_CONFIG] ||
-    SECURITY_CONFIG.development
-  );
-};
-=======
-// Security constants and utilities
-import { User } from "../types";
-
-export const SECURITY_CONFIG = {
   // Remove hardcoded credentials completely
   AUTH: {
     TOKEN_EXPIRY: "24h",
@@ -285,6 +271,17 @@ export const SECURITY_CONFIG = {
     CONNECT_SRC: "'self' https:",
     FRAME_ANCESTORS: "'none'",
   },
+};
+
+/**
+ * Obtém configuração de segurança baseada no ambiente
+ */
+export const getSecurityConfig = () => {
+  const env = process.env.NODE_ENV || "development";
+  return (
+    SECURITY_CONFIG[env as keyof typeof SECURITY_CONFIG] ||
+    SECURITY_CONFIG.development
+  );
 };
 
 // Secure token storage utility
@@ -335,8 +332,8 @@ export class SecureStorage {
   }
 }
 
-// Input sanitization utilities
-export const sanitizeInput = {
+// Additional input sanitization utilities
+export const sanitizeInputUtils = {
   // Remove HTML tags and scripts
   html: (input: string): string => {
     return input
@@ -347,9 +344,21 @@ export const sanitizeInput = {
 
   // Escape special characters
   escape: (input: string): string => {
-    const div = document.createElement("div");
-    div.textContent = input;
-    return div.innerHTML;
+    if (typeof document !== "undefined") {
+      const div = document.createElement("div");
+      div.textContent = input;
+      return div.innerHTML;
+    }
+    return input.replace(/[&<>"']/g, (match) => {
+      const escapeMap: Record<string, string> = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      };
+      return escapeMap[match];
+    });
   },
 
   // Validate email format
@@ -430,4 +439,3 @@ export class ClientRateLimit {
     this.attempts.delete(key);
   }
 }
->>>>>>> Stashed changes

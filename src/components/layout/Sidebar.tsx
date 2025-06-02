@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 import { useAppConfig } from "@/contexts/AppConfigContext";
 import { cn } from "@/lib/utils";
 import {
@@ -26,8 +26,12 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
-  const toggleSidebar = () => { setIsCollapsed(!isCollapsed); };
-  const toggleMobileSidebar = () => { setIsMobileOpen(!isMobileOpen); };
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+  const toggleMobileSidebar = () => {
+    setIsMobileOpen(!isMobileOpen);
+  };
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 

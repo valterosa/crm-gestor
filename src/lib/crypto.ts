@@ -19,7 +19,7 @@ const simulateDecryption = (encrypted: string, key: string): string => {
 };
 
 // Chave para desenvolvimento (será substituída por variável de ambiente)
-const ENCRYPTION_KEY = process.env.REACT_APP_ENCRYPTION_KEY || "dev-key-2024";
+const ENCRYPTION_KEY = process.env.REACT_APP_ENCRYPTION_KEY ?? "dev-key-2024";
 
 /**
  * Criptografa dados sensíveis

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 import {
   Card,
   CardContent,
@@ -62,9 +62,13 @@ const Settings = () => {
 
       {showCompanySettings ? (
         <>
-          <div className="mb-4">            <Button
+          <div className="mb-4">
+            {" "}
+            <Button
               variant="outline"
-              onClick={() => { setShowCompanySettings(false); }}
+              onClick={() => {
+                setShowCompanySettings(false);
+              }}
             >
               Voltar às Configurações
             </Button>
@@ -91,10 +95,14 @@ const Settings = () => {
                   empresa
                 </p>
               </CardContent>
-              <CardFooter>                <Button
+              <CardFooter>
+                {" "}
+                <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => { setShowCompanySettings(true); }}
+                  onClick={() => {
+                    setShowCompanySettings(true);
+                  }}
                 >
                   <span>Configurar Empresa</span>
                   <ArrowRight className="h-4 w-4 ml-2" />

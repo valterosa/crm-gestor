@@ -74,7 +74,7 @@ export const leadSchema = z.object({
     .or(z.literal("")),
   telefone: z
     .string()
-    .regex(/^[\+]?[0-9\s\-\(\)]*$/, "Telefone inválido")
+    .regex(/^[+]?[0-9\s\-()]*$/, "Telefone inválido")
     .max(20, "Telefone muito longo")
     .optional()
     .or(z.literal("")),

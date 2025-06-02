@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -14,8 +14,11 @@ const NotFound = () => {
       </h1>
       <p className="mt-2 text-lg text-gray-600 text-center">
         A página que procura não existe ou foi removida.
-      </p>      <Button
-        onClick={() => { navigate(isAuthenticated ? "/dashboard" : "/login"); }}
+      </p>{" "}
+      <Button
+        onClick={() => {
+          navigate(isAuthenticated ? "/dashboard" : "/login");
+        }}
         className="mt-8"
       >
         {isAuthenticated ? "Voltar para Dashboard" : "Voltar para Login"}

@@ -97,7 +97,11 @@ export const getSecurityHeaders = (): SecurityHeaders => {
  * Para uso em middleware do servidor
  */
 export const applySecurityHeaders = (headers: SecurityHeaders) => {
-  return (req: any, res: any, next: any) => {
+  return (
+    req: unknown,
+    res: { setHeader: (key: string, value: string) => void },
+    next: () => void
+  ) => {
     Object.entries(headers).forEach(([key, value]) => {
       if (value) {
         res.setHeader(key, value);
