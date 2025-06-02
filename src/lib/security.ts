@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import DOMPurify from "dompurify";
 
 // Configuração baseada no ambiente
@@ -246,3 +247,187 @@ export const getSecurityConfig = () => {
     SECURITY_CONFIG.development
   );
 };
+=======
+// Security constants and utilities
+import { User } from "../types";
+
+export const SECURITY_CONFIG = {
+  // Remove hardcoded credentials completely
+  AUTH: {
+    TOKEN_EXPIRY: "24h",
+    REFRESH_TOKEN_EXPIRY: "7d",
+    MAX_LOGIN_ATTEMPTS: 5,
+    LOCKOUT_DURATION: 15 * 60 * 1000, // 15 minutes
+  },
+
+  // Debug mode controls
+  DEBUG: {
+    ENABLED: process.env.NODE_ENV !== "production",
+    SHOW_PERFORMANCE_METRICS: false,
+    LOG_LEVEL: process.env.NODE_ENV === "production" ? "error" : "debug",
+  },
+
+  // Session management
+  SESSION: {
+    SECURE: true,
+    HTTP_ONLY: true,
+    SAME_SITE: "strict" as const,
+    MAX_AGE: 24 * 60 * 60 * 1000, // 24 hours
+  },
+
+  // Content Security Policy
+  CSP: {
+    DEFAULT_SRC: "'self'",
+    SCRIPT_SRC: "'self'",
+    STYLE_SRC: "'self' 'unsafe-inline'",
+    IMG_SRC: "'self' data: https:",
+    FONT_SRC: "'self' data:",
+    CONNECT_SRC: "'self' https:",
+    FRAME_ANCESTORS: "'none'",
+  },
+};
+
+// Secure token storage utility
+export class SecureStorage {
+  private static readonly TOKEN_KEY = "auth_token";
+  private static readonly USER_KEY = "user_data";
+
+  // Use sessionStorage instead of localStorage for tokens
+  static setToken(token: string): void {
+    if (typeof window !== "undefined") {
+      // In production, this should be handled by httpOnly cookies
+      sessionStorage.setItem(this.TOKEN_KEY, token);
+    }
+  }
+
+  static getToken(): string | null {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem(this.TOKEN_KEY);
+    }
+    return null;
+  }
+
+  static removeToken(): void {
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem(this.TOKEN_KEY);
+      sessionStorage.removeItem(this.USER_KEY);
+    }
+  }
+  static setUser(user: User): void {
+    if (typeof window !== "undefined") {
+      // Only store non-sensitive user data
+      const sanitizedUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+      sessionStorage.setItem(this.USER_KEY, JSON.stringify(sanitizedUser));
+    }
+  }
+
+  static getUser(): User | null {
+    if (typeof window !== "undefined") {
+      const userData = sessionStorage.getItem(this.USER_KEY);
+      return userData ? JSON.parse(userData) : null;
+    }
+    return null;
+  }
+}
+
+// Input sanitization utilities
+export const sanitizeInput = {
+  // Remove HTML tags and scripts
+  html: (input: string): string => {
+    return input
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+      .replace(/<[^>]+>/g, "")
+      .trim();
+  },
+
+  // Escape special characters
+  escape: (input: string): string => {
+    const div = document.createElement("div");
+    div.textContent = input;
+    return div.innerHTML;
+  },
+
+  // Validate email format
+  email: (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email) && email.length <= 100;
+  },
+
+  // Password strength validation
+  password: (password: string): { valid: boolean; errors: string[] } => {
+    const errors: string[] = [];
+
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long");
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Password must contain at least one uppercase letter");
+    }
+
+    if (!/[a-z]/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter");
+    }
+
+    if (!/\d/.test(password)) {
+      errors.push("Password must contain at least one number");
+    }
+
+    if (!/[@$!%*?&]/.test(password)) {
+      errors.push(
+        "Password must contain at least one special character (@$!%*?&)"
+      );
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors,
+    };
+  },
+};
+
+// Rate limiting for client-side
+export class ClientRateLimit {
+  private static attempts: Map<string, { count: number; lastAttempt: number }> =
+    new Map();
+
+  static checkAttempt(
+    key: string,
+    maxAttempts: number = 5,
+    windowMs: number = 15 * 60 * 1000
+  ): boolean {
+    const now = Date.now();
+    const attempt = this.attempts.get(key);
+
+    if (!attempt) {
+      this.attempts.set(key, { count: 1, lastAttempt: now });
+      return true;
+    }
+
+    // Reset if window has expired
+    if (now - attempt.lastAttempt > windowMs) {
+      this.attempts.set(key, { count: 1, lastAttempt: now });
+      return true;
+    }
+
+    // Check if limit exceeded
+    if (attempt.count >= maxAttempts) {
+      return false;
+    }
+
+    // Increment attempt
+    attempt.count++;
+    attempt.lastAttempt = now;
+    return true;
+  }
+
+  static reset(key: string): void {
+    this.attempts.delete(key);
+  }
+}
+>>>>>>> Stashed changes

@@ -11,7 +11,7 @@ import { useErrorContext } from "@/contexts/ErrorContext";
 
 interface DebugPanelProps {
   title?: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   position?: "top-right" | "bottom-right" | "bottom-left" | "top-left";
   initiallyExpanded?: boolean;
   showCaptureButton?: boolean;
@@ -33,7 +33,7 @@ const DebugPanel: React.FC<DebugPanelProps> = ({
   const [isOpen, setIsOpen] = useState(initiallyExpanded);
   const [isCapturing, setIsCapturing] = useState(false);
   const { globalError, clearError } = useErrorContext();
-  const [localData, setLocalData] = useState<Record<string, any>>({});
+  const [localData, setLocalData] = useState<Record<string, unknown>>({});
 
   // Atualizar dados locais quando os dados externos mudarem
   useEffect(() => {

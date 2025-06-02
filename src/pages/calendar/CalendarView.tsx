@@ -78,10 +78,11 @@ const CalendarView = () => {
         newDate = addDays(selectedDate, 7);
         break;
       case "month":
-      default:
+      default: {
         const nextMonth = selectedDate.getMonth() + 1;
         newDate = new Date(selectedDate.getFullYear(), nextMonth, 1);
         break;
+      }
     }
 
     setSelectedDate(newDate);
@@ -98,10 +99,11 @@ const CalendarView = () => {
         newDate = addDays(selectedDate, -7);
         break;
       case "month":
-      default:
+      default: {
         const prevMonth = selectedDate.getMonth() - 1;
         newDate = new Date(selectedDate.getFullYear(), prevMonth, 1);
         break;
+      }
     }
 
     setSelectedDate(newDate);

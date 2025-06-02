@@ -77,6 +77,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button };
+export { buttonVariants };
 
 // Adiciona ao CSS global (exemplo, pode ser colocado em index.css):
 // .hover\\:text-contrast-primary:hover { color: var(--contrast-primary) !important; }

@@ -2,7 +2,6 @@ type LogLevel = "error" | "warn" | "info" | "debug";
 
 const isDevMode = process.env.NODE_ENV === "development";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const logger = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: (message: string, ...args: any[]) => {
@@ -119,5 +118,7 @@ ${consoleOutput.join("\n")}
 
 // Registrar a função no objeto window para facilitar o acesso
 if (typeof window !== "undefined") {
-  (window as any).captureErrorReport = captureErrorDetails;
+  (
+    window as Window & { captureErrorReport?: typeof captureErrorDetails }
+  ).captureErrorReport = captureErrorDetails;
 }

@@ -1,5 +1,4 @@
-
-export type UserRole = 'admin' | 'manager' | 'salesperson';
+export type UserRole = "admin" | "manager" | "salesperson";
 
 export interface User {
   id: string;
@@ -17,7 +16,14 @@ export interface Lead {
   company: string;
   email: string;
   phone: string;
-  status: 'novo' | 'contactado' | 'qualificado' | 'proposta' | 'negociação' | 'ganho' | 'perdido';
+  status:
+    | "novo"
+    | "contactado"
+    | "qualificado"
+    | "proposta"
+    | "negociação"
+    | "ganho"
+    | "perdido";
   value: number;
   assignedTo: string;
   assignedToUser?: User;
@@ -25,7 +31,7 @@ export interface Lead {
   createdAt: string;
   updatedAt: string;
   documents?: Document[];
-  customFields?: Record<string, any>;
+  customFields?: Record<string, unknown>;
 }
 
 export interface Document {
@@ -44,8 +50,8 @@ export interface Task {
   title: string;
   description?: string;
   dueDate: string;
-  status: 'pendente' | 'em_progresso' | 'concluída' | 'cancelada';
-  priority: 'baixa' | 'média' | 'alta';
+  status: "pendente" | "em_progresso" | "concluída" | "cancelada";
+  priority: "baixa" | "média" | "alta";
   assignedTo: string;
   assignedToUser?: User;
   relatedLeadId?: string;
@@ -77,7 +83,7 @@ export interface DashboardMetric {
   value: number;
   previousValue?: number;
   change?: number;
-  changeType?: 'positive' | 'negative' | 'neutral';
+  changeType?: "positive" | "negative" | "neutral";
   icon?: string;
 }
 
