@@ -170,7 +170,7 @@ const LeadDetail = () => {
       <div className="flex flex-col items-center justify-center h-64">
         <Info className="h-12 w-12 text-muted-foreground mb-4" />
         <p className="text-xl font-medium">Lead não encontrado</p>
-        <Button onClick={() => navigate("/leads/kanban")} variant="link">
+        <Button onClick={() => { navigate("/leads/kanban"); }} variant="link">
           Voltar para a lista de leads
         </Button>
       </div>
@@ -200,7 +200,7 @@ const LeadDetail = () => {
       {/* Cabeçalho e ações */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+          <Button variant="ghost" size="icon" onClick={() => { navigate(-1); }}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-2xl font-bold">{lead.nome}</h1>
@@ -222,7 +222,7 @@ const LeadDetail = () => {
               <SelectItem value="perdido">Perdido</SelectItem>
             </SelectContent>{" "}
           </Select>{" "}
-          <Button variant="outline" onClick={() => setIsEditModalOpen(true)}>
+          <Button variant="outline" onClick={() => { setIsEditModalOpen(true); }}>
             <Edit className="h-4 w-4 mr-2" />
             Editar
           </Button>
@@ -395,11 +395,10 @@ const LeadDetail = () => {
                     </div>
                   </div>
 
-                  <div className="border-t pt-4">
-                    <Button
+                  <div className="border-t pt-4">                    <Button
                       variant="outline"
                       className="w-full"
-                      onClick={() => setActiveTab("eventos")}
+                      onClick={() => { setActiveTab("eventos"); }}
                     >
                       Ver todas as atividades
                     </Button>
@@ -516,19 +515,17 @@ const LeadDetail = () => {
                           <StatusBadge status={tarefa.prioridade} />
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button
+                      <div className="flex items-center gap-2">                        <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleEditTask(tarefa)}
+                          onClick={() => { handleEditTask(tarefa); }}
                           title="Editar tarefa"
                         >
                           <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
+                        </Button>                        <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDeleteTask(tarefa.id)}
+                          onClick={() => { handleDeleteTask(tarefa.id); }}
                           title="Excluir tarefa"
                         >
                           <Trash className="h-4 w-4" />

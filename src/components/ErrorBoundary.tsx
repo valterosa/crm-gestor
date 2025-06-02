@@ -60,9 +60,8 @@ class ErrorBoundary extends Component<Props, State> {
                     </pre>
                   </>
                 )}
-              </details>
-              <Button
-                onClick={() => window.location.reload()}
+              </details>              <Button
+                onClick={() => { window.location.reload(); }}
                 variant="destructive"
               >
                 Recarregar página

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,6 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { User, Lock } from "lucide-react";
+import { validateData, userSchema } from "@/lib/validation";
+import { sanitizeInput } from "@/lib/security";
 
 const UserProfile = () => {
   const { user } = useAuth();
@@ -29,49 +31,89 @@ const UserProfile = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Perfil atualizado",
-      description: "As suas informações foram atualizadas com sucesso.",
-    });
+
+    try {
+      // Sanitizar inputs
+      const sanitizedName = sanitizeInput(formData.name);
+      const sanitizedEmail = sanitizeInput(formData.email);
+
+      // Validar dados
+      const validationResult = validateData(userSchema, {
+        name: sanitizedName,
+        email: sanitizedEmail,
+        role: user?.role || "salesperson",
+      });
+
+      if (!validationResult.success) {
+        toast({
+          title: "Erro de validação",
+          description: validationResult.errors[0] || "Dados inválidos",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Perfil atualizado",
+        description: "As suas informações foram atualizadas com sucesso.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao atualizar perfil.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const handlePasswordSubmit = (e: React.FormEvent) => { e.preventDefault(); submitPassword(); };
 
-    // Validação de password
-    if (formData.newPassword !== formData.confirmPassword) {
+    try {
+      // Sanitizar passwords
+      const sanitizedCurrentPassword = sanitizeInput(formData.currentPassword);
+      const sanitizedNewPassword = sanitizeInput(formData.newPassword);
+      const sanitizedConfirmPassword = sanitizeInput(formData.confirmPassword);
+
+      // Validar dados
+      const validationResult = validateData(userSchema, {
+        name: user?.name || "",
+        email: user?.email || "",
+        role: user?.role || "salesperson",
+        password: sanitizedNewPassword,
+        confirmPassword: sanitizedConfirmPassword,
+      });
+
+      if (!validationResult.success) {
+        toast({
+          title: "Erro de validação",
+          description: validationResult.errors[0] || "Password inválida",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Password atualizada",
+        description: "A sua password foi atualizada com sucesso.",
+      });
+
+      // Limpar os campos de password
+      setFormData((prev) => ({
+        ...prev,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      }));
+    } catch (error) {
       toast({
         title: "Erro",
-        description: "As passwords não coincidem.",
+        description: "Erro ao atualizar password.",
         variant: "destructive",
       });
-      return;
     }
-
-    if (formData.newPassword.length < 6) {
-      toast({
-        title: "Erro",
-        description: "A password deve ter pelo menos 6 caracteres.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Password atualizada",
-      description: "A sua password foi atualizada com sucesso.",
-    });
-
-    // Limpar os campos de password
-    setFormData((prev) => ({
-      ...prev,
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    }));
   };
 
   return (

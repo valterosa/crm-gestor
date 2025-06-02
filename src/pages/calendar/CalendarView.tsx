@@ -78,10 +78,11 @@ const CalendarView = () => {
         newDate = addDays(selectedDate, 7);
         break;
       case "month":
-      default:
+      default: {
         const nextMonth = selectedDate.getMonth() + 1;
         newDate = new Date(selectedDate.getFullYear(), nextMonth, 1);
         break;
+      }
     }
 
     setSelectedDate(newDate);
@@ -98,10 +99,11 @@ const CalendarView = () => {
         newDate = addDays(selectedDate, -7);
         break;
       case "month":
-      default:
+      default: {
         const prevMonth = selectedDate.getMonth() - 1;
         newDate = new Date(selectedDate.getFullYear(), prevMonth, 1);
         break;
+      }
     }
 
     setSelectedDate(newDate);
@@ -167,11 +169,9 @@ const CalendarView = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold">Calendário</h1>
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <Button onClick={() => goToToday()}>Hoje</Button>
-
-          <Tabs
+          <Button onClick={() => { goToToday(); }}>Hoje</Button>          <Tabs
             value={viewMode}
-            onValueChange={(value) => setViewMode(value as CalendarViewMode)}
+            onValueChange={(value) => { setViewMode(value as CalendarViewMode); }}
           >
             <TabsList>
               <TabsTrigger value="day">Dia</TabsTrigger>

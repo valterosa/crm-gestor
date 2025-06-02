@@ -12,9 +12,8 @@ const AccessDenied = () => {
       </h1>
       <p className="mt-2 text-lg text-gray-600">
         Não tem permissão para aceder a esta página.
-      </p>
-      <Button
-        onClick={() => navigate("/dashboard")}
+      </p>      <Button
+        onClick={() => { navigate("/dashboard"); }}
         className="mt-8 bg-primary hover:bg-primary/80"
       >
         Voltar para Dashboard

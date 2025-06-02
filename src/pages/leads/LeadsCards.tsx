@@ -58,12 +58,11 @@ const LeadsCardsComponent = ({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
         <div className="relative w-full sm:w-64">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />          <Input
             placeholder="Pesquisar leads..."
             className="pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => { setSearchTerm(e.target.value); }}
           />
         </div>
         <DropdownMenu>

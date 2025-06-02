@@ -22,16 +22,17 @@ interface ExtendedPerformance extends Performance {
 const GlobalDebugTools: React.FC = () => {
   const { isDebugMode, toggleDebugMode } = useDebugMode();
   const { globalError } = useErrorContext();
-
   if (!isDebugMode) {
     // Não renderiza nenhum botão, já que agora o controle está na página de configurações
     return null;
-  } // Informações do sistema e ambiente
+  }
+  
+  // Informações do sistema e ambiente
   const systemInfo = {
     app: {
-      versão: process.env.VITE_APP_VERSION || "1.0.0",
-      ambiente: process.env.NODE_ENV || "development",
-      buildDate: process.env.VITE_BUILD_DATE || new Date().toISOString(),
+      versão: process.env.VITE_APP_VERSION ?? "1.0.0",
+      ambiente: process.env.NODE_ENV ?? "development",
+      buildDate: process.env.VITE_BUILD_DATE ?? new Date().toISOString(),
     },
     navegador: {
       userAgent: navigator.userAgent,
@@ -44,10 +45,10 @@ const GlobalDebugTools: React.FC = () => {
       timestamp: new Date().toISOString(),
       memória: (performance as ExtendedPerformance).memory
         ? `${Math.round(
-            (performance as ExtendedPerformance).memory!.usedJSHeapSize /
+            (performance as ExtendedPerformance).memory?.usedJSHeapSize /
               1048576
           )}MB / ${Math.round(
-            (performance as ExtendedPerformance).memory!.jsHeapSizeLimit /
+            (performance as ExtendedPerformance).memory?.jsHeapSizeLimit /
               1048576
           )}MB`
         : "Não disponível",

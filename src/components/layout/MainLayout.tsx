@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 import GlobalDebugTools from "../GlobalDebugTools";
 
 interface MainLayoutProps {

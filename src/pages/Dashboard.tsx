@@ -19,7 +19,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/useAuth";
 import { DashboardMetric, ChartData, Lead, Task, Event } from "@/types";
 import { Calendar, CheckSquare, Users, Clipboard } from "lucide-react";
 

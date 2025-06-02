@@ -2,7 +2,6 @@ type LogLevel = "error" | "warn" | "info" | "debug";
 
 const isDevMode = process.env.NODE_ENV === "development";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const logger = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: (message: string, ...args: any[]) => {
@@ -35,9 +34,8 @@ export const logger = {
       console.log("Data:", data);
       console.groupEnd();
     }
-  },
-  // Função para capturar logs por um período
-  captureErrorDetails: (duration: number = 5000) => {
+  },  // Função para capturar logs por um período
+  captureErrorDetails: (duration = 5000) => {
     return captureErrorDetails(duration);
   },
 };
@@ -48,7 +46,7 @@ export const logger = {
  * @param duration Duração em milissegundos para capturar logs (padrão: 5000ms)
  * @returns Mensagem indicando que a captura foi iniciada
  */
-export function captureErrorDetails(duration: number = 5000) {
+export function captureErrorDetails(duration = 5000) {
   const consoleOutput: string[] = [];
   const originalConsoleError = console.error;
   const originalConsoleWarn = console.warn;
@@ -105,8 +103,7 @@ ${consoleOutput.join("\n")}
         alert(
           "Relatório de erro copiado para a área de transferência. Cole para o assistente."
         )
-      )
-      .catch((err) => {
+      )      .catch((err: unknown) => {
         console.error("Não foi possível copiar o relatório:", err);
         alert(
           "Não foi possível copiar automaticamente. Abra o console e copie os logs manualmente."
@@ -119,5 +116,7 @@ ${consoleOutput.join("\n")}
 
 // Registrar a função no objeto window para facilitar o acesso
 if (typeof window !== "undefined") {
-  (window as any).captureErrorReport = captureErrorDetails;
+  (
+    window as Window & { captureErrorReport?: typeof captureErrorDetails }
+  ).captureErrorReport = captureErrorDetails;
 }

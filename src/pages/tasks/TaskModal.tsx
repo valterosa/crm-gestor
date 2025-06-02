@@ -229,11 +229,10 @@ const TaskModal = ({
                 </Popover>
 
                 <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <Input
+                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />                  <Input
                     type="time"
                     value={hour}
-                    onChange={(e) => setHour(e.target.value)}
+                    onChange={(e) => { setHour(e.target.value); }}
                     className="w-[120px]"
                   />
                 </div>
@@ -243,11 +242,10 @@ const TaskModal = ({
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="prioridade" className="text-right">
                 Prioridade
-              </Label>
-              <Select
+              </Label>              <Select
                 value={formData.prioridade || "media"}
                 onValueChange={(value) =>
-                  handleSelectChange("prioridade", value)
+                  { handleSelectChange("prioridade", value); }
                 }
               >
                 <SelectTrigger className="col-span-3">
@@ -265,10 +263,9 @@ const TaskModal = ({
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="status" className="text-right">
                 Estado
-              </Label>
-              <Select
+              </Label>              <Select
                 value={formData.status || "pendente"}
-                onValueChange={(value) => handleSelectChange("status", value)}
+                onValueChange={(value) => { handleSelectChange("status", value); }}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Selecione o estado" />
@@ -282,11 +279,10 @@ const TaskModal = ({
               </Select>
             </div>
           </div>
-          <DialogFooter>
-            <Button
+          <DialogFooter>            <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => { onOpenChange(false); }}
             >
               Cancelar
             </Button>
