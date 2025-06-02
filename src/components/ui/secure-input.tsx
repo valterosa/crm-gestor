@@ -28,7 +28,7 @@ interface SecureInputProps
   /** Callback chamado quando atividade suspeita é detectada */
   onSuspiciousActivity?: (details: string) => void;
   /** Change handler with specific event type */
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Change to onChange?: (_: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const SecureInput = forwardRef<HTMLInputElement, SecureInputProps>(
