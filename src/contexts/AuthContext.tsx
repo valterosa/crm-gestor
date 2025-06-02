@@ -159,10 +159,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       // Mock de resposta do servidor com credenciais validadas
       let mockUser: User | null = null;
-
       if (
         sanitizedEmail === `admin@${config.companyDomain}` &&
-        sanitizedPassword === "admin123"
+        sanitizedPassword === "Admin123"
       ) {
         mockUser = {
           id: "1",
@@ -174,7 +173,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
       } else if (
         sanitizedEmail === `gerente@${config.companyDomain}` &&
-        sanitizedPassword === "gerente123"
+        sanitizedPassword === "Gerente123"
       ) {
         mockUser = {
           id: "2",
@@ -186,7 +185,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
       } else if (
         sanitizedEmail === `vendedor@${config.companyDomain}` &&
-        sanitizedPassword === "vendedor123"
+        sanitizedPassword === "Vendedor123"
       ) {
         mockUser = {
           id: "3",
@@ -236,7 +235,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!user) return false;
 
     // Administradores sempre têm todas as permissões
-    if (user.role === "admin") return true;    // Para outros papéis, verifica na lista de permissões
+    if (user.role === "admin") return true; // Para outros papéis, verifica na lista de permissões
     return rolePermissions[user.role].includes(permission) || false;
   };
 
