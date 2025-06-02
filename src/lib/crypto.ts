@@ -200,7 +200,7 @@ export class SecureStorage {
    */
   public getItem<T = unknown>(
     key: string,
-    encrypted: boolean = true
+    encrypted = true
   ): T | null {
     try {
       const stored = localStorage.getItem(key);
