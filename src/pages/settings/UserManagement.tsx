@@ -225,11 +225,10 @@ const UserManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Button
+        <div className="flex items-center gap-2">          <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/configuracoes")}
+            onClick={() => { navigate("/configuracoes"); }}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -240,8 +239,7 @@ const UserManagement = () => {
         </div>
 
         <Dialog open={openCreateDialog} onOpenChange={setOpenCreateDialog}>
-          <DialogTrigger asChild>
-            <Button onClick={() => resetForm()}>
+          <DialogTrigger asChild>            <Button onClick={() => { resetForm(); }}>
               <Plus className="h-4 w-4 mr-2" />
               Novo Utilizador
             </Button>
@@ -316,11 +314,10 @@ const UserManagement = () => {
                   />
                 </div>
               </div>
-              <DialogFooter>
-                <Button
+              <DialogFooter>                <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setOpenCreateDialog(false)}
+                  onClick={() => { setOpenCreateDialog(false); }}
                 >
                   Cancelar
                 </Button>
@@ -443,33 +440,30 @@ const UserManagement = () => {
                               <div className="space-y-2">
                                 <Label htmlFor="edit-password">
                                   Nova Password (opcional)
-                                </Label>
-                                <Input
+                                </Label>                                <Input
                                   id="edit-password"
                                   name="password"
                                   type="password"
-                                  value={formData.password || ""}
+                                  value={formData.password ?? ""}
                                   onChange={handleInputChange}
                                 />
                               </div>
                               <div className="space-y-2">
                                 <Label htmlFor="edit-confirmPassword">
                                   Confirmar Nova Password
-                                </Label>
-                                <Input
+                                </Label>                                <Input
                                   id="edit-confirmPassword"
                                   name="confirmPassword"
                                   type="password"
-                                  value={formData.confirmPassword || ""}
+                                  value={formData.confirmPassword ?? ""}
                                   onChange={handleInputChange}
                                 />
                               </div>
                             </div>
-                            <DialogFooter>
-                              <Button
+                            <DialogFooter>                              <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => setOpenEditDialog(false)}
+                                onClick={() => { setOpenEditDialog(false); }}
                               >
                                 Cancelar
                               </Button>
@@ -496,9 +490,8 @@ const UserManagement = () => {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDeleteUser(user.id)}
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>                            <AlertDialogAction
+                              onClick={() => { handleDeleteUser(user.id); }}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
                               Remover

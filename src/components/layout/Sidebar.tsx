@@ -26,9 +26,8 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
-
-  const toggleSidebar = () => setIsCollapsed(!isCollapsed);
-  const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
+  const toggleSidebar = () => { setIsCollapsed(!isCollapsed); };
+  const toggleMobileSidebar = () => { setIsMobileOpen(!isMobileOpen); };
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 

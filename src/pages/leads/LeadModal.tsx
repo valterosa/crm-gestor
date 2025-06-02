@@ -194,10 +194,9 @@ const LeadModal = ({ open, onOpenChange, onLeadCreated }: LeadModalProps) => {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="status" className="text-right">
                 Estado
-              </Label>
-              <Select
+              </Label>              <Select
                 value={formData.status}
-                onValueChange={(value) => handleSelectChange("status", value)}
+                onValueChange={(value) => { handleSelectChange("status", value); }}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Selecione o estado" />
@@ -216,10 +215,9 @@ const LeadModal = ({ open, onOpenChange, onLeadCreated }: LeadModalProps) => {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="origem" className="text-right">
                 Origem
-              </Label>
-              <Select
+              </Label>              <Select
                 value={formData.origem}
-                onValueChange={(value) => handleSelectChange("origem", value)}
+                onValueChange={(value) => { handleSelectChange("origem", value); }}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Selecione a origem" />
@@ -249,11 +247,10 @@ const LeadModal = ({ open, onOpenChange, onLeadCreated }: LeadModalProps) => {
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button
+          <DialogFooter>            <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => { onOpenChange(false); }}
             >
               Cancelar
             </Button>

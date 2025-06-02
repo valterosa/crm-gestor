@@ -75,12 +75,10 @@ const LeadEditModal = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!lead) return;
-
-    // Criar um lead atualizado com os dados do formulário
+    if (!lead) return;    // Criar um lead atualizado com os dados do formulário
     const updatedLead: Lead = {
       ...lead,
-      ...(formData as Lead),
+      ...(formData),
       ultimaAtualizacao: new Date().toISOString(),
     };
 
@@ -155,11 +153,10 @@ const LeadEditModal = ({
                 </div>
 
                 <div className="space-y-2 mt-4">
-                  <Label htmlFor="status">Estado</Label>
-                  <Select
+                  <Label htmlFor="status">Estado</Label>                  <Select
                     value={formData.status || lead.status}
                     onValueChange={(value) =>
-                      handleSelectChange("status", value)
+                      { handleSelectChange("status", value); }
                     }
                   >
                     <SelectTrigger>
@@ -178,11 +175,10 @@ const LeadEditModal = ({
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="origem">Origem</Label>
-                  <Select
+                  <Label htmlFor="origem">Origem</Label>                  <Select
                     value={formData.origem || lead.origem}
                     onValueChange={(value) =>
-                      handleSelectChange("origem", value)
+                      { handleSelectChange("origem", value); }
                     }
                   >
                     <SelectTrigger>
@@ -321,11 +317,10 @@ const LeadEditModal = ({
               </TabsContent>
             </Tabs>
           </div>
-          <DialogFooter className="mt-2 gap-2">
-            <Button
+          <DialogFooter className="mt-2 gap-2">            <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => { onOpenChange(false); }}
             >
               Cancelar
             </Button>

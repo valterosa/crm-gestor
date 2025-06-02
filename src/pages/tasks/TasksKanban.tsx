@@ -139,12 +139,11 @@ const TasksKanban = () => {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
         <div className="relative w-full sm:w-64">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />          <Input
             placeholder="Pesquisar tarefas..."
             className="pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => { setSearchTerm(e.target.value); }}
           />
         </div>
         <DropdownMenu>
@@ -178,17 +177,15 @@ const TasksKanban = () => {
                 }`}
                 open={!collapsedColumns[column.id]}
               >
-                <div className="bg-gray-100 rounded-t-md p-3 font-medium border">
-                  <CollapsibleTrigger
+                <div className="bg-gray-100 rounded-t-md p-3 font-medium border">                  <CollapsibleTrigger
                     asChild
-                    onClick={() => toggleColumn(column.id)}
+                    onClick={() => { toggleColumn(column.id); }}
                     className="w-full"
                   >
                     <div className="flex justify-between items-center cursor-pointer">
                       <span>{column.title}</span>
-                      <div className="flex items-center">
-                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
-                          {filteredTasks[column.id]?.length || 0}
+                      <div className="flex items-center">                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
+                          {filteredTasks[column.id].length || 0}
                         </span>
                         {collapsedColumns[column.id] ? (
                           <ChevronDown className="h-4 w-4" />
@@ -207,9 +204,8 @@ const TasksKanban = () => {
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         className="bg-gray-50 rounded-b-md border border-t-0 h-full"
-                      >
-                        <ScrollArea className="h-[400px] p-2">
-                          {filteredTasks[column.id]?.map((task, index) => (
+                      >                        <ScrollArea className="h-[400px] p-2">
+                          {filteredTasks[column.id].map((task, index) => (
                             <Draggable
                               key={task.id}
                               draggableId={task.id}

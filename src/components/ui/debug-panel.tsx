@@ -89,10 +89,10 @@ const DebugPanel: React.FC<DebugPanelProps> = ({
         const btn = document.getElementById("debug-copy-btn");
         if (btn) {
           btn.classList.add("bg-green-500");
-          setTimeout(() => btn.classList.remove("bg-green-500"), 1000);
+          setTimeout(() => { btn.classList.remove("bg-green-500"); }, 1000);
         }
       })
-      .catch((err) => console.error("Falha ao copiar dados:", err));
+      .catch((err: unknown) => console.error("Falha ao copiar dados:", err));
   };
 
   return (

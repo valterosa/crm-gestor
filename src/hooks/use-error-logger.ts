@@ -15,7 +15,7 @@ interface ErrorLoggerOptions {
  */
 export function useErrorLogger(options?: ErrorLoggerOptions) {
   const [error, setError] = useState<Error | null>(null);
-  const componentName = options?.componentName || "UnnamedComponent";
+  const componentName = options?.componentName ?? "UnnamedComponent";
   const reportToGlobal = options?.reportToGlobal !== false;
   const errorContext = useErrorContext();
   const listenerId = useRef(

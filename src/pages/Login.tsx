@@ -95,13 +95,12 @@ const Login = () => {
           >
             {" "}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>{" "}
-              <SecureInput
+              <Label htmlFor="email">Email</Label>{" "}              <SecureInput
                 id="email"
                 type="email"
                 placeholder="seu.email@empresa.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); }}
                 securityContext="login.email"
                 required
               />
@@ -112,13 +111,12 @@ const Login = () => {
                 <a href="#" className="text-sm text-primary hover:underline">
                   Esqueceu a password?
                 </a>
-              </div>
-              <SecureInput
+              </div>              <SecureInput
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); }}
                 securityContext="login.password"
                 required
               />

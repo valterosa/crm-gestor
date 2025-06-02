@@ -55,11 +55,9 @@ const LeadsPage = () => {
             </TabsTrigger>
           </TabsList>
         </Tabs>
-      </div>
-
-      {activeView === "kanban" && (
+      </div>      {activeView === "kanban" && (
         <LeadsKanban
-          onOpenModal={() => setIsModalOpen(true)}
+          onOpenModal={() => { setIsModalOpen(true); }}
           refreshTrigger={refreshTrigger}
         />
       )}

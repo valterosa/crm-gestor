@@ -236,10 +236,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!user) return false;
 
     // Administradores sempre têm todas as permissões
-    if (user.role === "admin") return true;
-
-    // Para outros papéis, verifica na lista de permissões
-    return rolePermissions[user.role]?.includes(permission) || false;
+    if (user.role === "admin") return true;    // Para outros papéis, verifica na lista de permissões
+    return rolePermissions[user.role].includes(permission) || false;
   };
 
   // Provide dataMode in the context

@@ -106,12 +106,11 @@ const LeadsTable = memo(
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
           <div className="relative w-full sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />            <Input
               placeholder="Pesquisar leads..."
               className="pl-8"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value); }}
             />
           </div>
           <DropdownMenu>
@@ -137,10 +136,9 @@ const LeadsTable = memo(
         <div className="rounded-md border">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead
+              <TableRow>                <TableHead
                   className="cursor-pointer"
-                  onClick={() => handleSort("nome")}
+                  onClick={() => { handleSort("nome"); }}
                 >
                   Nome
                   {sortField === "nome" &&
@@ -149,10 +147,9 @@ const LeadsTable = memo(
                     ) : (
                       <ChevronDown className="inline h-4 w-4 ml-1" />
                     ))}
-                </TableHead>
-                <TableHead
+                </TableHead>                <TableHead
                   className="cursor-pointer"
-                  onClick={() => handleSort("empresa")}
+                  onClick={() => { handleSort("empresa"); }}
                 >
                   Empresa
                   {sortField === "empresa" &&
@@ -163,10 +160,9 @@ const LeadsTable = memo(
                     ))}
                 </TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Telefone</TableHead>
-                <TableHead
+                <TableHead>Telefone</TableHead>                <TableHead
                   className="cursor-pointer text-right"
-                  onClick={() => handleSort("valor")}
+                  onClick={() => { handleSort("valor"); }}
                 >
                   Valor
                   {sortField === "valor" &&
@@ -175,10 +171,9 @@ const LeadsTable = memo(
                     ) : (
                       <ChevronDown className="inline h-4 w-4 ml-1" />
                     ))}
-                </TableHead>
-                <TableHead
+                </TableHead>                <TableHead
                   className="cursor-pointer"
-                  onClick={() => handleSort("status")}
+                  onClick={() => { handleSort("status"); }}
                 >
                   Estado
                   {sortField === "status" &&
@@ -187,10 +182,9 @@ const LeadsTable = memo(
                     ) : (
                       <ChevronDown className="inline h-4 w-4 ml-1" />
                     ))}
-                </TableHead>
-                <TableHead
+                </TableHead>                <TableHead
                   className="cursor-pointer"
-                  onClick={() => handleSort("dataRegisto")}
+                  onClick={() => { handleSort("dataRegisto"); }}
                 >
                   Data de Registo
                   {sortField === "dataRegisto" &&

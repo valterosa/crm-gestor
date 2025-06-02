@@ -79,10 +79,9 @@ const LeadsKanban = ({ onOpenModal, refreshTrigger = 0 }: LeadsKanbanProps) => {
   const debouncedSetSearch = useMemo(
     () => debounce(setDebouncedSearch, 250),
     []
-  );
-  useEffect(() => {
+  );  useEffect(() => {
     debouncedSetSearch(searchTerm);
-    return () => debouncedSetSearch.cancel();
+    return () => { debouncedSetSearch.cancel(); };
   }, [searchTerm, debouncedSetSearch]);
 
   const handleDragEnd = (result: DropResult) => {
@@ -190,12 +189,11 @@ const LeadsKanban = ({ onOpenModal, refreshTrigger = 0 }: LeadsKanbanProps) => {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-end items-center gap-2">
         <div className="relative w-full sm:w-64">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />          <Input
             placeholder="Pesquisar leads..."
             className="pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => { setSearchTerm(e.target.value); }}
           />
         </div>
         <DropdownMenu>
@@ -231,17 +229,15 @@ const LeadsKanban = ({ onOpenModal, refreshTrigger = 0 }: LeadsKanbanProps) => {
                 }`}
                 open={!collapsedColumns[column.id]}
               >
-                <div className="bg-gray-100 rounded-t-md p-3 font-medium border flex-shrink-0">
-                  <CollapsibleTrigger
+                <div className="bg-gray-100 rounded-t-md p-3 font-medium border flex-shrink-0">                  <CollapsibleTrigger
                     asChild
-                    onClick={() => handleToggleColumn(column.id)}
+                    onClick={() => { handleToggleColumn(column.id); }}
                     className="w-full"
                   >
                     <div className="flex justify-between items-center cursor-pointer">
                       <span>{column.title}</span>
-                      <div className="flex items-center">
-                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
-                          {filteredLeads[column.id]?.length || 0}
+                      <div className="flex items-center">                        <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2">
+                          {filteredLeads[column.id].length || 0}
                         </span>
                         {collapsedColumns[column.id] ? (
                           <ChevronDown className="h-4 w-4" />
@@ -260,9 +256,8 @@ const LeadsKanban = ({ onOpenModal, refreshTrigger = 0 }: LeadsKanbanProps) => {
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         className="bg-gray-50 rounded-b-md border border-t-0 flex-grow flex flex-col overflow-hidden"
-                      >
-                        <ScrollArea className="h-full p-2 flex-grow overflow-visible pb-16">
-                          {filteredLeads[column.id]?.map((lead, index) => (
+                      >                        <ScrollArea className="h-full p-2 flex-grow overflow-visible pb-16">
+                          {filteredLeads[column.id].map((lead, index) => (
                             <Draggable
                               key={lead.id}
                               draggableId={lead.id}

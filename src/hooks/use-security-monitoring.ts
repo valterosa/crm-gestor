@@ -55,12 +55,7 @@ export const useSecurityMonitoring = () => {
       severity,
       userAgent: navigator.userAgent,
       ip: "client-side", // Em produção, obteria do servidor
-    };
-
-    setEvents((prev) => {
-      const newEvents = [event, ...prev].slice(0, 100); // Manter apenas 100 eventos
-      return newEvents;
-    });
+    };    setEvents((prev) => [event, ...prev].slice(0, 100)); // Manter apenas 100 eventos
 
     // Atualizar métricas
     setMetrics((prev) => ({

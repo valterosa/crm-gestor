@@ -9,10 +9,10 @@ interface ErrorContextProps {
   clearError: () => void;
 }
 
-type ErrorListener = {
+interface ErrorListener {
   id: string;
   callback: (error: Error) => void;
-};
+}
 
 const ErrorContext = createContext<ErrorContextProps | undefined>(undefined);
 

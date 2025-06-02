@@ -33,7 +33,7 @@ export interface BadgeProps
 function Badge({ className, variant, style, ...props }: BadgeProps) {
   const { config } = useAppConfig();
   let dynamicClass = className;
-  let dynamicStyle = style || {};
+  let dynamicStyle = style ?? {};
 
   // Aplica contraste acessível apenas no hover para badges principais
   if (variant === "default" && config?.primaryColor) {
