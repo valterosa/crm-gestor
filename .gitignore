@@ -26,3 +26,15 @@ dist-ssr
 
 #Ignore vscode AI rules
 .github\copilot-instructions.md
+
+# Environment variables e tokens sensíveis
+.env
+.env.local
+.env.production
+.env.test
+*.token
+
+# Codacy outputs
+codacy-*.json
+codacy-analysis.json
+.codacy-analysis/

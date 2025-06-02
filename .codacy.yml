@@ -1,0 +1,49 @@
+# Codacy Configuration File
+# https://docs.codacy.com/repositories-configure/codacy-configuration-file/
+
+# Ferramentas de análise a usar
+engines:
+  # ESLint para JavaScript/TypeScript
+  eslint:
+    enabled: true
+    exclude_paths:
+      - "node_modules/**"
+      - "dist/**"
+      - "build/**"
+      - "coverage/**"
+      - "*.test.ts"
+      - "*.test.tsx"
+
+  # Outras ferramentas
+  bandit:
+    enabled: false # Python - não aplicável
+
+  remark-lint:
+    enabled: true
+    exclude_paths:
+      - "node_modules/**"
+
+# Padrões de exclusão globais
+exclude_paths:
+  - "node_modules/**"
+  - "dist/**"
+  - "build/**"
+  - "coverage/**"
+  - "public/**"
+  - "*.min.js"
+  - "*.d.ts"
+  - "vite.config.ts"
+  - "tailwind.config.ts"
+  - "postcss.config.js"
+
+# Configurações de duplicação
+duplication:
+  exclude_paths:
+    - "src/components/ui/**" # Componentes UI podem ter padrões similares
+    - "src/types/**" # Types podem ter estruturas similares
+
+# Configurações de cobertura
+coverage:
+  precision: 2
+  round: nearest
+  range: "50...100"
