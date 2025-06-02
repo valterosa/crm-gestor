@@ -69,7 +69,7 @@ const UserProfile = () => {
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const handlePasswordSubmit = (e: React.FormEvent) => { e.preventDefault(); submitPassword(); };
 
     try {
       // Sanitizar passwords
