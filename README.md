@@ -1,109 +1,47 @@
-# CRM Documentation
+# CRM
 
-Bem-vindo à documentação do sistema CRM. Este documento foi estruturado para ser utilizado no GitBook, centralizando todas as informações relevantes sobre o projeto.
+Bem-vindo ao sistema CRM, uma aplicação completa para gestão de contactos, leads, tarefas e eventos. Este projeto foi desenvolvido para equipas de vendas e gestão que procuram uma solução eficiente e personalizável.
 
-## Introdução
+## Principais Funcionalidades
 
-O CRM é um sistema completo e generalizável, otimizado para instalação em servidor Ubuntu 24.04 x64 com Nginx ou Apache. Ele é adaptável e personalizável para atender às necessidades de qualquer empresa.
+- Gestão de utilizadores com permissões.
+- Dashboard inicial com KPIs relevantes.
+- Gestão de leads com vistas Kanban, Tabela e Cartões.
+- Calendário com vistas por Dia, Semana e Mês.
+- Gestão de tarefas com prioridades e estados.
+- Configurações personalizáveis para utilizadores.
 
-## Stack Tecnológica
+## Stack Tecnológico
 
-- **Frontend**: React com Vite, TailwindCSS, ShadCN UI
-- **Backend**: Node.js + Express + Prisma
-- **Base de Dados**: PostgreSQL
-- **Autenticação**: JWT com RBAC (gestão de permissões)
-- **Armazenamento**: Local para anexos de leads
+- **Frontend**: React com Vite, TailwindCSS, ShadCN UI.
+- **Backend**: Node.js + Express + Prisma.
+- **Base de Dados**: PostgreSQL.
+- **Autenticação**: JWT com RBAC (gestão de permissões).
 
-## Funcionalidades Principais
-
-### Gestão de Utilizadores
-
-- Perfis: Administrador, Gestor de Vendas e Vendedores
-- Controlo de acesso baseado em permissões
-
-### Dashboard Inicial
-
-- KPIs relevantes por utilizador
-- Indicadores de tarefas, eventos e leads
-
-### Gestão de Leads
-
-- Vistas: Kanban, Tabela e Cartões
-- Drag-and-drop para mover entre estados
-- Filtros e pesquisa avançada
-
-### Calendário
-
-- Vistas por Dia, Semana e Mês
-- Arrastar e editar eventos
-
-### Gestão de Tarefas
-
-- Vistas Kanban e Lista
-- Tarefas com data, estado, responsável e prioridade
-
-### Perfil e Configurações
-
-- Gestão de dados pessoais
-- Configurações do sistema
-
-## Requisitos do Sistema
-
-- Node.js v18+
-- PostgreSQL 14+
-- Nginx ou Apache
-- Ubuntu 24.04 LTS x64
-
-## Guia de Instalação
-
-### Passos para Configuração Local
+## Como Arrancar o Projeto Localmente
 
 1. Clone o repositório:
    ```bash
    git clone <URL_DO_REPOSITORIO>
+   cd crm-gestor
    ```
 2. Instale as dependências:
    ```bash
    npm install
    ```
-3. Configure as variáveis de ambiente no arquivo `.env`.
+3. Configure as variáveis de ambiente no ficheiro `.env`.
 4. Inicie o servidor em modo de desenvolvimento:
    ```bash
    npm run dev
    ```
-5. Para compilar para produção:
-   ```bash
-   npm run build
-   ```
 
-## Credenciais de Teste
+## Suporte
 
-- **Administrador**: admin@empresa.com / admin123
-- **Gestor**: gerente@empresa.com / gerente123
-- **Vendedor**: vendedor@empresa.com / vendedor123
+Para dúvidas ou suporte, consulte a [documentação completa](docs/getting-started.md) ou entre em contacto com o autor.
 
-## Contribuição
+---
 
-Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
-
-1. Faça um fork do repositório.
-2. Crie uma branch para sua feature ou correção de bug:
-   ```bash
-   git checkout -b minha-feature
-   ```
-3. Faça commit das suas alterações:
-   ```bash
-   git commit -m "Descrição da minha feature"
-   ```
-4. Envie suas alterações:
-   ```bash
-   git push origin minha-feature
-   ```
-5. Abra um Pull Request.
-
-## Autor
-
-© Valter Rosa - 2025
+Este projeto é mantido por © Valter Rosa - 2025.
 
 ---
 
