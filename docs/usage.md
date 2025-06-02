@@ -6,9 +6,9 @@ Este guia fornece exemplos passo a passo para utilizar as principais funcionalid
 
 1. Aceda à página de login.
 2. Insira as suas credenciais:
-   - **Administrador**: admin@empresa.com / admin123
-   - **Gestor**: gerente@empresa.com / gerente123
-   - **Vendedor**: vendedor@empresa.com / vendedor123
+   - **Administrador**: admin@empresa.com / Admin123
+   - **Gestor**: gerente@empresa.com / Gerente123
+   - **Vendedor**: vendedor@empresa.com / Vendedor123
 3. Clique em "Entrar".
 
 ## 2. Gestão de Leads
